@@ -22,6 +22,7 @@ import AdminBannedPlayers from "@/components/admin/AdminBannedPlayers.vue";
 import AdminLoadingScreenTips from "@/components/admin/AdminLoadingScreenTips.vue";
 import AdminNewsForLauncher from "@/components/admin/AdminNewsForLauncher.vue";
 import AdminQueueData from "@/components/admin/AdminQueueData.vue";
+import AdminMotd from "@/components/admin/AdminMotd.vue";
 
 @Component({
   components: {
@@ -29,7 +30,8 @@ import AdminQueueData from "@/components/admin/AdminQueueData.vue";
     AdminBannedPlayers,
     AdminLoadingScreenTips,
     AdminNewsForLauncher,
-    AdminQueueData
+    AdminQueueData,
+    AdminMotd
   }
 })
 export default class Admin extends Vue {
@@ -57,9 +59,20 @@ export default class Admin extends Vue {
       ]
     },
     {
-      key: "tips",
-      title: "Loading screen tips",
-      component: "admin-loading-screen-tips"
+      title: "Messages",
+      icon: "mid-chart-line",
+      items: [{
+        key: "tips",
+        title: "Loading screen tips",
+        icon: "mdi-chart-line",
+        component: "admin-loading-screen-tips",
+      },
+      {
+        key: "motd",
+        title: "Message of the Day",
+        icon: "mdi-chart-line",
+        component: "admin-motd",
+      }],
     },
     {
       title: "Data Science",

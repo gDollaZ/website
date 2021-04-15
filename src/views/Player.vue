@@ -8,8 +8,8 @@
               style="display: flex; flex-direction: row; align-items: center;"
             >
               <div flex-column>
-              <span>Profile of {{ profile.battleTag }}</span>
-              <div v-if="aliasName">({{ aliasName }})</div>
+                <span>Profile of {{ profile.battleTag }}</span>
+                <div v-if="aliasName">({{ aliasName }})</div>
               </div>
               <div
                 style="display: flex; flex-direction: row; margin-left: 25px;"
@@ -150,7 +150,6 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 import { PlayerProfile } from "@/store/player/types";
 import { EGameMode, Match, PlayerInTeam, Team } from "@/store/typings";
 
-import MatchesGrid from "../components/matches/MatchesGrid.vue";
 import ModeStatsGrid from "@/components/player/ModeStatsGrid.vue";
 import PlayerStatsRaceVersusRaceOnMap from "@/components/player/PlayerStatsRaceVersusRaceOnMap.vue";
 import PlayerAvatar from "@/components/player/PlayerAvatar.vue";
@@ -181,7 +180,6 @@ import SeasonBadge from "@/components/player/SeasonBadge.vue";
     PlayerAvatar,
     PlayerLeague,
     PlayerStatsRaceVersusRaceOnMap,
-    MatchesGrid,
     ModeStatsGrid,
     GatewaySelect,
     TeamMatchInfo,

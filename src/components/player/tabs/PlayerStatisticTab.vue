@@ -74,12 +74,10 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
-import MatchesGrid from "@/components/matches/MatchesGrid.vue";
 import { EGameMode, ERaceEnum } from "@/store/typings";
 import {
   PlayerMmrRpTimeline,
   PlayerStatsRaceOnMapVersusRace,
-  RaceStat,
   RaceWinsOnMap,
 } from "@/store/player/types";
 import PlayerStatsRaceVersusRaceOnMap from "@/components/player/PlayerStatsRaceVersusRaceOnMap.vue";
@@ -88,8 +86,7 @@ import PlayerMmrRpTimelineChart from "@/components/player/PlayerMmrRpTimelineCha
 @Component({
   components: {
     PlayerStatsRaceVersusRaceOnMap,
-    PlayerMmrRpTimelineChart,
-    MatchesGrid,
+    PlayerMmrRpTimelineChart
   },
 })
 export default class PlayerStatisticTab extends Vue {

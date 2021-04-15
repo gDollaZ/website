@@ -34,7 +34,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
-import { EGameMode } from "../../store/typings";
+import { EGameMode, EGameModeCategory } from "../../store/typings";
 
 @Component({})
 export default class GameModeSelect extends Vue {
@@ -46,26 +46,32 @@ export default class GameModeSelect extends Vue {
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_1ON1]}`),
         gameMode: EGameMode.GM_1ON1,
+        gameCategory: EGameModeCategory.GMC_MELEE,
       },
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_2ON2]}`),
         gameMode: EGameMode.GM_2ON2,
+        gameCategory: EGameModeCategory.GMC_MELEE,
       },
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_2ON2_AT]}`),
         gameMode: EGameMode.GM_2ON2_AT,
+        gameCategory: EGameModeCategory.GMC_MELEE,
       },
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_4ON4]}`),
         gameMode: EGameMode.GM_4ON4,
+        gameCategory: EGameModeCategory.GMC_MELEE,
       },
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_FFA]}`),
         gameMode: EGameMode.GM_FFA,
+        gameCategory: EGameModeCategory.GMC_MELEE,
       },
       {
         modeName: `Footmen Frenzy`,
         gameMode: EGameMode.GM_FOOTMAN_FRENZY,
+        gameCategory: EGameModeCategory.GMC_NON_MELEE,
       }
     ];
 

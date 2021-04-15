@@ -1,5 +1,5 @@
 <template>
-  <div v-if="team">
+  <div v-if="team && isMelee">
     <div
         v-for="(player, index) in team.players"
         v-bind:key="index"
@@ -20,7 +20,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { Team } from "@/store/typings";
+import { Team, EGameModeCategory } from "@/store/typings";
 import PlayerMatchInfo from "@/components/matches/PlayerMatchInfo.vue";
 
 @Component({
@@ -33,5 +33,13 @@ export default class TeamMatchInfo extends Vue {
   @Prop() public notClickable!: boolean;
   @Prop() public unfinishedMatch!: boolean;
   @Prop() public isAnonymous!: boolean;
+  @Prop({ default: EGameModeCategory.GMC_MELEE }) public gameModeCategory?: EGameModeCategory;
+
+  get isMelee() : boolean {
+      if (this.gameModeCategory == EGameModeCategory.GMC_MELEE) return true;
+
+      return false;
+  }
+
 }
 </script>

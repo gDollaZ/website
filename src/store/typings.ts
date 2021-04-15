@@ -118,6 +118,19 @@ export enum EGameMode {
   GM_FOOTMAN_FRENZY = 101,
 }
 
+export enum EGameModeCategory {
+  GMC_MELEE = 1,
+  GMC_NON_MELEE = 2,
+}
+
+export enum ECustomGameModeNumberOfTeams {
+  GMNT_FOOTMEN_FRENZY = 4
+}
+
+export enum ECustomGameModeTeamSize {
+  GMTS_FOOTMEN_FRENZY = 3
+}
+
 export enum EPick {
   OVERALL,
   FIRST = 1,

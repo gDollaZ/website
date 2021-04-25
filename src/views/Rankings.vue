@@ -192,7 +192,7 @@ export default class RankingsView extends Vue {
   public search = "";
   public searchModel = {} as Ranking;
   public isLoading = false;
-  public ongoingMatchesMap: any = {};
+  public ongoingMatchesMap = {} as any;
   public gameModes = EGameMode;
   public races = ERaceEnum;
 
@@ -203,10 +203,10 @@ export default class RankingsView extends Vue {
   @Prop({ default: "" })
   public playerId!: string;
 
-  private _intervalRefreshHandle: any = {};
+  private _intervalRefreshHandle = {} as number;
 
   @Watch("searchModel")
-  public onSearchModelChanged(rank: Ranking) {
+  public onSearchModelChanged(rank: Ranking) : void {
     if (!rank) return;
 
     if (!this.playerIsRanked(rank)) {
@@ -217,7 +217,7 @@ export default class RankingsView extends Vue {
   }
 
   @Watch("search")
-  public onSearchChanged(newValue: string) {
+  public onSearchChanged(newValue: string) : void {
     if (newValue && newValue.length > 2) {
       this.$store.direct.dispatch.rankings.search({
         searchText: newValue.toLowerCase(),
@@ -228,23 +228,23 @@ export default class RankingsView extends Vue {
     }
   }
 
-  public isDuplicateName(name: string) {
+  public isDuplicateName(name: string) : boolean {
     return this.searchRanks.filter((r) => r.player.name === name).length > 1;
   }
 
-  get selectedSeason() {
+  get selectedSeason() : Season {
     return this.$store.direct.state.rankings.selectedSeason;
   }
 
-  get seasons() {
+  get seasons() : Season[]{
     return this.$store.direct.state.rankings.seasons;
   }
 
-  get selectedGameMode() {
+  get selectedGameMode() : EGameMode{
     return this.$store.direct.state.rankings.gameMode;
   }
 
-  get selectedLeague(): League {
+  get selectedLeague() : League {
     if (!this.ladders) return {} as League;
 
     return (
@@ -288,14 +288,14 @@ export default class RankingsView extends Vue {
     return this.$store.direct.state.rankings.searchRanks;
   }
 
-  get showRaceDistribution() {
+  get showRaceDistribution(): boolean {
     return (
       this.$store.direct.state.rankings.gameMode == EGameMode.GM_1ON1 &&
       this.$store.direct.state.rankings.selectedSeason?.id > 1
     );
   }
 
-  public async onGatewayChanged() {
+  public async onGatewayChanged(): Promise<void> {
     this.$store.direct.commit.rankings.SET_PAGE(0);
 
     if (this.ladders && this.ladders[0]) {
@@ -303,14 +303,14 @@ export default class RankingsView extends Vue {
     }
   }
 
-  public async onGameModeChanged(gameMode: EGameMode) {
+  public async onGameModeChanged(gameMode: EGameMode) : Promise<void> {
     await this.$store.direct.dispatch.rankings.setGameMode(gameMode);
     if (this.ladders && this.ladders[0]) {
       await this.setLeague(this.ladders[0].id);
     }
   }
 
-  async mounted() {
+  async mounted(): Promise<void> {
     this.search = "";
     if (this.league) {
       await this.$store.direct.dispatch.rankings.setLeague(this.league);
@@ -350,26 +350,26 @@ export default class RankingsView extends Vue {
     clearInterval(this._intervalRefreshHandle);
   }
 
-  get selectedGateway() {
+  get selectedGateway(): Gateways {
     return this.$store.direct.state.gateway;
   }
 
-  public async refreshRankings() {
+  public async refreshRankings(): Promise<void> {
     await this.loadOngoingMatches();
 
     await this.getRankings();
     await this.getLadders();
   }
 
-  public async getRankings() {
+  public async getRankings(): Promise<void> {
     await this.$store.direct.dispatch.rankings.retrieveRankings();
   }
 
-  public async getLadders() {
+  public async getLadders(): Promise<void> {
     await this.$store.direct.dispatch.rankings.retrieveLeagueConstellation();
   }
 
-  public async loadOngoingMatches() {
+  public async loadOngoingMatches() : Promise<void> {
     await this.$store.direct.dispatch.matches.loadAllOngoingMatches();
 
     this.ongoingMatchesMap = {};
@@ -391,12 +391,12 @@ export default class RankingsView extends Vue {
     });
   }
 
-  public async selectSeason(season: Season) {
+  public async selectSeason(season: Season): Promise<void> {
     await this.$store.direct.dispatch.rankings.setSeason(season);
     await this.$store.direct.dispatch.rankings.setLeague(0);
   }
 
-  public async setLeague(league: number) {
+  public async setLeague(league: number): Promise<void> {
     await this.$store.direct.dispatch.rankings.setLeague(league);
   }
 
@@ -404,7 +404,7 @@ export default class RankingsView extends Vue {
     return rank.player.games > 0        
   }
 
-  public routeToProfilePage(playerId: string) {
+  public routeToProfilePage(playerId: string): void {
     this.$router.push({ 
       path: getProfileUrl(playerId)
     })

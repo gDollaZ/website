@@ -147,7 +147,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import { PlayerProfile } from "@/store/player/types";
+import { PlayerProfile, RaceStat, ModeStat } from "@/store/player/types";
 import { EGameMode, Match, PlayerInTeam, Team } from "@/store/typings";
 
 import MatchesGrid from "../components/matches/MatchesGrid.vue";
@@ -196,19 +196,19 @@ export default class PlayerView extends Vue {
   private _intervalRefreshHandle: any = {};
 
   @Watch("battleTag")
-  onBattleTagChanged() {
+  onBattleTagChanged(): void {
     this.init();
   }
 
-  get raceStats() {
+  get raceStats(): RaceStat[] {
     return this.$store.direct.state.player.raceStats;
   }
 
-  get gameModeStats() {
+  get gameModeStats(): ModeStat[] {
     return this.$store.direct.state.player.gameModeStats;
   }
 
-  public selectSeason(season: Season) {
+  public selectSeason(season: Season): void {
     this.$store.direct.commit.player.SET_SELECTED_SEASON(season);
     this.$store.direct.dispatch.player.loadGameModeStats({});
     this.$store.direct.dispatch.player.loadRaceStats();
@@ -219,7 +219,7 @@ export default class PlayerView extends Vue {
     this.$store.direct.dispatch.player.loadPlayerMmrRpTimeline();
   }
 
-  get seasons() {
+  get seasons(): Season[] {
     return this.$store.direct.state.player.playerProfile.participatedInSeasons;
   }
 
@@ -230,7 +230,7 @@ export default class PlayerView extends Vue {
     return false;
   }
 
-  get seasonsWithoutCurrentOne() {
+  get seasonsWithoutCurrentOne(): Season[] {
     return (
       this.seasons
         ?.filter(
@@ -248,7 +248,7 @@ export default class PlayerView extends Vue {
     return this.$store.direct.state.player.loadingProfile;
   }
 
-  get selectedSeason() {
+  get selectedSeason(): Season {
     return this.$store.direct.state.player.selectedSeason;
   }
 
@@ -264,15 +264,15 @@ export default class PlayerView extends Vue {
     return this.$store.direct.state.player.matches;
   }
 
-  get ongoingMatch() {
+  get ongoingMatch(): Match {
     return this.$store.direct.state.player.ongoingMatch;
   }
 
-  get isOngoingMatchFFA() {
+  get isOngoingMatchFFA(): boolean {
     return this.ongoingMatch && this.ongoingMatch.gameMode == EGameMode.GM_FFA;
   }
 
-  get ongoingMatchGameModeClass() {
+  get ongoingMatchGameModeClass(): string {
     if (!this.ongoingMatch.id) {
       return "";
     }
@@ -296,7 +296,7 @@ export default class PlayerView extends Vue {
     return "";
   }
 
-  public getDuration(match: Match) {
+  public getDuration(match: Match): number {
     var today = new Date();
     var diffMs =
       today.getTime() - new Date(match.startTime.toString()).getTime(); // milliseconds between now & Christmas
@@ -305,7 +305,7 @@ export default class PlayerView extends Vue {
     return diffMins;
   }
 
-  public getPlayerTeam(match: Match) {
+  public getPlayerTeam(match: Match): Match | Team | undefined {
     if (!match.teams) {
       return {} as Match;
     }
@@ -317,7 +317,7 @@ export default class PlayerView extends Vue {
     );
   }
 
-  public getOpponentTeam(match: Match) {
+  public getOpponentTeam(match: Match): Match | Team | undefined {
     if (!match.teams) {
       return {} as Match;
     }
@@ -330,15 +330,15 @@ export default class PlayerView extends Vue {
     );
   }
 
-  public gatewayChanged() {
+  public gatewayChanged(): void {
     this.$store.direct.dispatch.player.reloadPlayer();
   }
 
-  async mounted() {
+  async mounted(): Promise<void> {
     await this.init();
   }
 
-  private async init() {
+  private async init(): Promise<void> {
     this.$store.direct.commit.player.SET_BATTLE_TAG(this.battleTag);
 
     await this.$store.direct.dispatch.player.loadProfile({battleTag: this.battleTag, freshLogin: this.freshLogin});
@@ -360,7 +360,7 @@ export default class PlayerView extends Vue {
     window.scrollTo(0, 0);
   }
 
-  destroyed() {
+  destroyed(): void {
     this.$store.direct.commit.player.SET_ONGOING_MATCH({} as Match);
     clearInterval(this._intervalRefreshHandle);
   }

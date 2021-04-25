@@ -50,7 +50,7 @@ import HeroWinrate from "@/components/overal-statistics/HeroWinrate.vue";
 import PlayerStatsRaceVersusRaceOnMapTableCell from "@/components/player/PlayerStatsRaceVersusRaceOnMapTableCell.vue";
 import MmrDistributionChart from "@/components/overal-statistics/MmrDistributionChart.vue";
 import { SeasonGameModeGateWayForMMR } from '@/store/overallStats/types';
-import { Season } from '@/store/ranking/types.ts'
+import { Season } from '@/store/ranking/types'
 
 @Component({
   components: {
@@ -76,7 +76,7 @@ export default class OverallStatisticsView extends Vue {
     this.init();
   }
 
-  private async init() {
+  private async init(): Promise<void> {
     await this.$store.direct.dispatch.overallStatistics.loadGamesPerDayStatistics();
     await this.$store.direct.dispatch.overallStatistics.loadMapsPerSeason();
     await this.$store.direct.dispatch.overallStatistics.loadPlayersPerDayStatistics();

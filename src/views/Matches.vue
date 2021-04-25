@@ -83,12 +83,12 @@ export default class MatchesView extends Vue {
     return this.$store.direct.state.rankings.seasons[0].id;
   }
 
-  get maps() {
+  get maps(): unknown[] {
     const maps = this.mapsByGameMode[this.gameMode] || [];
     return Array.from(maps);
   }
 
-  get mapsByGameMode() {
+  get mapsByGameMode(): Record<EGameMode, Set<unknown>> {
     const filterSeasons = this.$store.direct.state.matches.status == MatchStatus.onGoing
       ? (matchesOnMapPerSeason: MatchesOnMapPerSeason) => matchesOnMapPerSeason.season === this.currentSeason
       : (matchesOnMapPerSeason: MatchesOnMapPerSeason) => matchesOnMapPerSeason.season >= 0;

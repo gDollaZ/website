@@ -32,7 +32,7 @@ interface Faq {
 export default class FaqView extends Vue {
   public faqs = [] as Faq[];
 
-  async mounted() {
+  async mounted(): Promise<void> {
     if (API_URL.includes("test")) {
       await this.setNewsContent("test");
     } else {
@@ -40,7 +40,7 @@ export default class FaqView extends Vue {
     }
   }
 
-  private async setNewsContent(stage: string) {
+  private async setNewsContent(stage: string): Promise<void> {
     const mdNewsResponse = await fetch(
       `https://raw.githubusercontent.com/w3champions/w3champions-news/master/${stage}/faqs.json`
     );

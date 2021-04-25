@@ -119,7 +119,7 @@ import {
   Season,
 } from "@/store/ranking/types";
 import { EGameMode, ERaceEnum } from "@/store/typings";
-import { ECountries, Countries } from "@/store/countries";
+import { Countries } from "@/store/countries";
 import CountryFlag from "vue-country-flag";
 import LeagueIcon from "@/components/ladder/LeagueIcon.vue";
 import GatewaySelect from "@/components/common/GatewaySelect.vue";
@@ -148,24 +148,24 @@ export default class CountryRankingsView extends Vue {
   @Prop() country!: string;
 
   @Watch("country")
-  onCountryChanged(newValue: string, oldValue: string) {
+  onCountryChanged(newValue: string): void {
     this.setCountry(newValue);
   }
 
   private _intervalRefreshHandle: any = {};
 
-  get selectedCountryCode() {
+  get selectedCountryCode(): string {
     return this.$store.direct.state.rankings.selectedCountry;
   }
 
-  get selectedCountry() {
+  get selectedCountry(): unknown {
     return (
       this.countries.find((c) => c.countryCode === this.selectedCountryCode) ??
       {}
     );
   }
 
-  get currentCountryCode() {
+  get currentCountryCode(): string {
     // country code of the data being displayed
     return (
       this.rankings[0]?.ranks[0].playersInfo[0].countryCode ||
@@ -173,7 +173,7 @@ export default class CountryRankingsView extends Vue {
     );
   }
 
-  get isLoading() {
+  get isLoading(): boolean {
     return (
       (this.$store.direct.state.rankings.countryRankingsLoading &&
         this.selectedCountryCode !== this.currentCountryCode) ||
@@ -181,15 +181,15 @@ export default class CountryRankingsView extends Vue {
     );
   }
 
-  get selectedGameMode() {
+  get selectedGameMode(): EGameMode {
     return this.$store.direct.state.rankings.gameMode;
   }
 
-  get selectedSeason() {
+  get selectedSeason(): Season {
     return this.$store.direct.state.rankings.selectedSeason;
   }
 
-  get seasons() {
+  get seasons(): Season[] {
     return this.$store.direct.state.rankings.seasons;
   }
 
@@ -207,21 +207,21 @@ export default class CountryRankingsView extends Vue {
     return league?.leagues;
   }
 
-  public async onGatewayChanged() {
+  public async onGatewayChanged(): Promise<void> {
     this.$store.direct.commit.rankings.SET_PAGE(0);
     this.refreshRankings();
   }
 
-  public async onGameModeChanged(gameMode: EGameMode) {
+  public async onGameModeChanged(gameMode: EGameMode): Promise<void> {
     await this.$store.direct.dispatch.rankings.setGameMode(gameMode);
     this.refreshRankings();
   }
 
-  selectCountry(countryCode: string) {
+  selectCountry(countryCode: string): void {
     this.$router.push(`/Countries?country=${countryCode}`);
   }
 
-  async mounted() {
+  async mounted(): Promise<void> {
     window.scrollTo(0, 0);
 
     if (this.season) {
@@ -248,30 +248,30 @@ export default class CountryRankingsView extends Vue {
     }, AppConstants.ongoingMatchesRefreshInterval);
   }
 
-  destroyed() {
+  destroyed(): void {
     clearInterval(this._intervalRefreshHandle);
   }
 
-  get selectedGateway() {
+  get selectedGateway(): Gateways {
     return this.$store.direct.state.gateway;
   }
 
-  public async refreshRankings() {
+  public async refreshRankings(): Promise<void> {
     await this.loadOngoingMatches();
 
     await this.getLadders();
     await this.getRankings();
   }
 
-  public async getRankings() {
+  public async getRankings(): Promise<void> {
     await this.$store.direct.dispatch.rankings.getCountryRankings();
   }
 
-  public async getLadders() {
+  public async getLadders(): Promise<void> {
     await this.$store.direct.dispatch.rankings.retrieveLeagueConstellation();
   }
 
-  public async loadOngoingMatches() {
+  public async loadOngoingMatches(): Promise<void> {
     await this.$store.direct.dispatch.matches.loadAllOngoingMatches();
 
     this.ongoingMatchesMap = {};
@@ -293,13 +293,13 @@ export default class CountryRankingsView extends Vue {
     });
   }
 
-  async selectSeason(season: Season) {
+  async selectSeason(season: Season): Promise<void> {
     await this.$store.direct.dispatch.rankings.setSeason(season);
     await this.$store.direct.dispatch.rankings.setLeague(0);
     this.refreshRankings();
   }
 
-  async setCountry(countryCode: string) {
+  async setCountry(countryCode: string): Promise<void> {
     await this.$store.direct.dispatch.rankings.setCountry(countryCode);
   }
 
@@ -307,7 +307,7 @@ export default class CountryRankingsView extends Vue {
     return rank.player.games > 0;
   }
 
-  public routeToProfilePage(playerId: string) {
+  public routeToProfilePage(playerId: string): void {
     this.$router.push({
       path: getProfileUrl(playerId),
     });

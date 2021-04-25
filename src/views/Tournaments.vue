@@ -66,17 +66,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import {
-  ITournamentPlayer,
   ITournamentMatch,
-  ITournamentRound,
   ITournament,
-  ConnectionType,
 } from "@/store/tournaments/types";
-import { ERaceEnum, EGameMode } from "@/store/typings";
-
-import { Gateways } from "@/store/ranking/types";
 
 import TournamentBracket from "@/components/tournaments/TournamentBracket.vue";
 import TournamentRoundConnector from "@/components/tournaments/TournamentRoundConnector.vue";
@@ -98,11 +92,11 @@ export default class TournamentsView extends Vue {
 
   selectedTournament? = {} as ITournament;
 
-  get tournament() {
+  get tournament(): ITournament | undefined {
     return this.tournaments.find(x => x.id == this.selectedTournament?.id);
   }
 
-  get tournaments() {
+  get tournaments(): ITournament[] {
     return this.$store.direct.state.tournaments.tournaments;
   }
 
@@ -110,35 +104,35 @@ export default class TournamentsView extends Vue {
     return this.$store.direct.state.oauth.isAdmin;
   }
 
-  get startDate() {
+  get startDate(): string {
     return moment(this.selectedTournament?.startsOn).format('DD-MM-YYYY')
   }
 
-  get startTime() {
+  get startTime(): string {
     return moment(this.selectedTournament?.startsOn).format('HH:mm:ss');
   }
 
-  tournamentSelected(tournament: ITournament) {
+  tournamentSelected(tournament: ITournament): void {
     this.selectedTournament = tournament;
   }
 
-  matchSelected(match: ITournamentMatch) {
+  matchSelected(match: ITournamentMatch): void {
     if (this.isAdmin) {
       this.selectedMatch = match;
       this.isEditMatchModalOpened = true;
     }
   }
 
-  closeModal() {
+  closeModal(): void {
     this.isEditMatchModalOpened = false;
     this.selectedMatch = {} as ITournamentMatch;
   }
 
-  async updateTournament() {
-      await this.$store.direct.dispatch.tournaments.saveTournament(this.tournament as any);
+  async updateTournament(): Promise<void> {
+      await this.$store.direct.dispatch.tournaments.saveTournament(this.tournament as ITournament);
   }
 
-  async mounted() {
+  async mounted(): Promise<void> {
     await this.$store.direct.dispatch.tournaments.retrieveTournaments();
     this.selectedTournament = this.tournaments[0];
   }

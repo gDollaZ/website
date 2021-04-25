@@ -160,10 +160,9 @@ import MatchHiglights from "@/components/match-details/MatchHiglights.vue";
 import HeroIcon from "@/components/match-details/HeroIcon.vue";
 import PlayerPerformanceOnMatch from "@/components/match-details/PlayerPerformanceOnMatch.vue";
 import MatchDetailHeroRow from "@/components/match-details/MatchDetailHeroRow.vue";
-import { EGameMode, PlayerScore, Team } from "@/store/typings";
+import { EGameMode, Match, PlayerScore, Team } from "@/store/typings";
 import { Gateways } from "@/store/ranking/types";
 import HostIcon from "@/components/matches/HostIcon.vue";
-import { Dictionary } from "vue-router/types/router";
 
 @Component({
   components: {
@@ -179,15 +178,15 @@ export default class MatchDetailView extends Vue {
   @Prop() public matchId!: string;
 
   @Watch("matchId")
-  onMatchIdChanged() {
+  onMatchIdChanged(): void {
     this.init();
   }
 
-  mounted() {
+  mounted(): void {
     this.init();
   }
 
-  get rowLabels() {
+  get rowLabels(): string[] {
     return [
       "",
       "Units killed",
@@ -199,11 +198,11 @@ export default class MatchDetailView extends Vue {
     ];
   }
 
-  get ffaPlayers() {
+  get ffaPlayers(): unknown {
     return [this.ffaWinner, ...this.ffaLoosers];
   }
 
-  get matchDuration() {
+  get matchDuration(): string {
     const format =
       this.match.durationInSeconds <= 3600
         ? this.$t("dateFormats.timeShort")
@@ -218,17 +217,17 @@ export default class MatchDetailView extends Vue {
       .toString();
   }
 
-  get playedDate() {
+  get playedDate(): string {
     return moment(this.match.startTime).format(
       this.$t("dateFormats.date").toString()
     );
   }
 
-  get match() {
+  get match(): Match {
     return this.$store.direct.state.matches.matchDetail.match;
   }
 
-  get isJubileeGame() {
+  get isJubileeGame(): boolean {
     if (!this.match?.number) {
       return false;
     }
@@ -236,7 +235,7 @@ export default class MatchDetailView extends Vue {
     return this.match.number !== 0 && this.match?.number % 1000000 === 0;
   }
 
-  get gameNumber() {
+  get gameNumber(): string {
     let number = this.match.number / 1000000;
     switch (number) {
       case 1:
@@ -262,74 +261,74 @@ export default class MatchDetailView extends Vue {
     }
   }
 
-  get gateWay() {
+  get gateWay(): string {
     return Gateways[this.$store.direct.state.matches.matchDetail.match.gateWay];
   }
 
-  get season() {
+  get season(): number {
     return this.$store.direct.state.matches.matchDetail.match.season ?? 1;
   }
 
-  get matchIsFFA() {
+  get matchIsFFA(): boolean {
     return (
       this.$store.direct.state.matches.matchDetail.match.gameMode ===
       EGameMode.GM_FFA
     );
   }
 
-  get isCompleteGame() {
+  get isCompleteGame(): PlayerScore[] {
     return this.$store.direct.state.matches.matchDetail.playerScores;
   }
 
-  get playerScores() {
+  get playerScores(): PlayerScore[] {
     return this.$store.direct.state.matches.matchDetail.playerScores ?? [];
   }
 
-  get scoresOfWinners() {
+  get scoresOfWinners(): PlayerScore[] {
     const winningTeam = this.match.teams[0];
     return this.getPlayerScores(winningTeam);
   }
 
-  get scoresOfLoosers() {
+  get scoresOfLoosers(): PlayerScore[] {
     const losingTeam = this.match.teams[1];
     return this.getPlayerScores(losingTeam);
   }
 
-  get ffaWinner() {
+  get ffaWinner(): PlayerScore | undefined {
     return this.playerScores.find(
       (s) => s.battleTag === this.match.teams[0].players[0].battleTag
     );
   }
 
-  get ffaLoosers() {
+  get ffaLoosers(): PlayerScore[] {
     return this.playerScores.filter(
       (s) => s.battleTag !== this.match.teams[0].players[0].battleTag
     );
   }
 
-  get ffaLooser1() {
+  get ffaLooser1(): PlayerScore | undefined {
     return this.playerScores.find(
       (s) => s.battleTag === this.match.teams[1].players[0].battleTag
     );
   }
 
-  get ffaLooser2() {
+  get ffaLooser2(): PlayerScore | undefined {
     return this.playerScores.find(
       (s) => s.battleTag === this.match.teams[2].players[0].battleTag
     );
   }
 
-  get ffaLooser3() {
+  get ffaLooser3(): PlayerScore | undefined {
     return this.playerScores.find(
       (s) => s.battleTag === this.match.teams[3].players[0].battleTag
     );
   }
 
-  get loading() {
+  get loading(): boolean {
     return this.$store.direct.state.matches.loadingMatchDetail;
   }
 
-  private async init() {
+  private async init(): Promise<void> {
     await this.$store.direct.dispatch.matches.loadMatchDetail(this.matchId);
   }
 

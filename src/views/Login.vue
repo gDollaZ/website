@@ -21,7 +21,7 @@ import { Component, Prop } from "vue-property-decorator";
 export default class LoginView extends Vue {
   @Prop() public code!: string;
 
-  mounted() {
+  mounted(): void {
     this.init();
   }
 
@@ -33,13 +33,13 @@ export default class LoginView extends Vue {
     return this.$store.direct.state.oauth.token;
   }
 
-  private async init() {
+  private async init(): Promise<void> {
     await this.$store.direct.dispatch.oauth.authorizeWithCode(this.code);
     await this.$store.direct.dispatch.oauth.loadBlizzardBtag(this.authCode);
     this.openPlayerProfile();
   }
 
-  public openPlayerProfile() {
+  public openPlayerProfile(): void {
     this.$router.push({
       path: getProfileUrl(this.account) + `?freshLogin=true`,
     });

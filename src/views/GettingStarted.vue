@@ -282,27 +282,27 @@ import { LAUNCHER_UPDATE_URL } from "@/main";
 @Component({})
 export default class GettingStartedView extends Vue {
 
-  get alertMessage() {
+  get alertMessage(): string {
     return "Those steps are only needed, if you have problems with the normal w3champions App. In that case, please reach out on discord!"
   }
 
-  get webUiLink() {
+  get webUiLink(): string {
     return LAUNCHER_UPDATE_URL + "webui";
   }
 
-  get mapsLink() {
+  get mapsLink(): string {
     return LAUNCHER_UPDATE_URL + "maps";
   }
 
-  get launcherUrlMac() {
+  get launcherUrlMac(): string {
     return LAUNCHER_UPDATE_URL + "launcher/mac";
   }
 
-  get launcherUrlWin() {
+  get launcherUrlWin(): string {
     return LAUNCHER_UPDATE_URL + "launcher/win";
   }
 
-  data() {
+  data(): unknown {
     return {
       tabsModel: null,
     };

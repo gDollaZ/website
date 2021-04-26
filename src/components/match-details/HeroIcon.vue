@@ -20,7 +20,7 @@ export default class HeroIcon extends Vue {
   @Prop() hero!: Hero;
   @Prop() firstHero!: boolean;
 
-  get firstHeroOrNot() {
+  get firstHeroOrNot(): string {
     return this.firstHero
       ? "hero-level-flag-first-hero"
       : "hero-level-flag-second";

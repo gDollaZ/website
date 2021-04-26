@@ -47,7 +47,7 @@ export default class AdminProxies extends Vue {
   }
   
   @Watch("searchPlayerProxiesModel")
-  public async onSearchStringChanged(searchedPlayer : SearchedPlayer) : Promise<void> {
+  public async onSearchStringChanged(searchedPlayer : SearchedPlayer): Promise<void> {
     if (!searchedPlayer) return
     
     if (searchedPlayer) {
@@ -65,17 +65,17 @@ export default class AdminProxies extends Vue {
     }
   }
 
-  public async  setPlayerProxies(proxies : ProxySettings) : Promise<void> {
+  public async  setPlayerProxies(proxies : ProxySettings): Promise<void> {
     this.$store.direct.dispatch.admin.updateModifiedProxies({overrides: proxies.nodeOverrides, isAutomatic: false})
     this.$store.direct.dispatch.admin.updateModifiedProxies({overrides: proxies.automaticNodeOverrides, isAutomatic: true})
   }
 
-  get proxiesOnSearchedTag() : ProxySettings {
+  get proxiesOnSearchedTag(): ProxySettings {
     return this.$store.direct.state.admin.proxiesSetForSearchedPlayer;
   }
 
   @Watch("search")
-  public onSearchChanged(newValue: string) : void{
+  public onSearchChanged(newValue: string): void{
     if (newValue && newValue.length > 2 && newValue >= this.oldSearchTerm) {
       this.$store.direct.dispatch.admin.searchBnetTag({
         searchText: newValue.toLowerCase()
@@ -90,7 +90,7 @@ export default class AdminProxies extends Vue {
     return this.$store.direct.state.admin.searchedPlayers;
   }
 
-  public sanitizeString(string : string) : string {
+  public sanitizeString(string : string): string {
 
     let str = string;
     str = str.replace(/-/g, `_`);
@@ -98,7 +98,7 @@ export default class AdminProxies extends Vue {
     return str;
   }
 
-  get availableProxies() : Proxy[] {
+  get availableProxies(): Proxy[] {
     return this.$store.direct.state.admin.availableProxies;
   }
 
@@ -107,17 +107,17 @@ export default class AdminProxies extends Vue {
   }
 
   @Watch("isAdmin")
-  onBattleTagChanged() : void {
+  onBattleTagChanged(): void {
     this.init();
   }
 
-  private async init() : Promise<void> {
+  private async init(): Promise<void> {
     if (this.isAdmin) {
       await this.$store.direct.dispatch.admin.loadAvailableProxies(this.$store.direct.state.oauth.token);
     }
   }
 
-  async mounted() : Promise<void> {
+  async mounted(): Promise<void> {
     await this.init();
   }
 }

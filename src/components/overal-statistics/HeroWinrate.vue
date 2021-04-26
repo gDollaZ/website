@@ -47,25 +47,25 @@ import HeroPictureSelect from "@/components/overal-statistics/HeroPictureSelect.
   components: { HeroPictureSelect },
 })
 export default class HeroWinrate extends Vue {
-  get winrateClass() {
+  get winrateClass(): string {
     if (this.winrate > 0.55) return "won";
     if (this.winrate < 0.45) return "lost";
     return "";
   }
 
-  get winrate() {
+  get winrate(): number {
     return this.$store.direct.state.overallStatistics.heroWinrate.winrate;
   }
 
-  get wins() {
+  get wins(): number {
     return this.$store.direct.state.overallStatistics.heroWinrate.wins;
   }
 
-  get losses() {
+  get losses(): number {
     return this.$store.direct.state.overallStatistics.heroWinrate.losses;
   }
 
-  mounted() {
+  mounted(): void {
     this.$store.direct.dispatch.overallStatistics.loadHeroWinrates();
   }
 }

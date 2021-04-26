@@ -15,7 +15,7 @@ import { ChartData } from "chart.js";
 export default class AmountPerGatewayPerDayChart extends Vue {
   @Prop() public gameDays!: GameDayPerMode[][];
 
-  get gameDayDates() {
+  get gameDayDates(): string[] {
     return this.gameDays[0][0].gameDays.map((g) => moment(g.date).format("LL"));
   }
 

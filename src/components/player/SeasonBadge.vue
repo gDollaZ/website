@@ -23,11 +23,11 @@ export default class SeasonBadge extends Vue {
   @Prop() season!: Season;
   @Prop() onClick!: (season: Season) => void;
 
-  get seasonId() {
+  get seasonId(): number | string {
     return this.season.id === 0 ? "β" : this.season.id;
   }
 
-  get seasonBadgeBg() {
+  get seasonBadgeBg(): string {
     return getAsset(`seasonBadges/Season_${this.season.id}.png`);
   }
 }

@@ -130,7 +130,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import { ECountries } from "@/store/countries";
 import CountryFlag from "vue-country-flag";
 import { ITournamentMatch, ITournamentPlayer } from "@/store/tournaments/types";
@@ -148,7 +148,7 @@ export default class PlayerAvatar extends Vue {
   public _player1Copy?: ITournamentPlayer;
   public _player2Copy?: ITournamentPlayer;
 
-  get date() {
+  get date(): Date | null {
     if (!this._date &&
       this.tournamentMatch &&
       this.tournamentMatch.date) {
@@ -157,11 +157,11 @@ export default class PlayerAvatar extends Vue {
     return this._date;
   }
 
-  set date(d) {
+  set date(d: Date | null) {
     this._date = d;
   }
 
-  get player1() {
+  get player1(): ITournamentPlayer | undefined {
     if (
       !this._player1Copy &&
       this.tournamentMatch &&
@@ -174,7 +174,7 @@ export default class PlayerAvatar extends Vue {
     return this._player1Copy;
   }
 
-  get player2() {
+  get player2(): ITournamentPlayer | undefined {
     if (
       !this._player2Copy &&
       this.tournamentMatch &&
@@ -187,7 +187,7 @@ export default class PlayerAvatar extends Vue {
     return this._player2Copy;
   }
 
-  saveMatch() {
+  saveMatch(): void {
     if (this.tournamentMatch) {
       this.tournamentMatch.date = this._date?.toISOString();
       if (this._player1Copy && this._player1Copy.score) {
@@ -205,7 +205,7 @@ export default class PlayerAvatar extends Vue {
     this.close();
   }
 
-  close() {
+  close(): void {
     this._date = null;
     (this.$refs.datetimePicker as any).clearHandler();
     this._player1Copy = undefined;
@@ -213,7 +213,7 @@ export default class PlayerAvatar extends Vue {
     this.$emit("modalClosed");
   }
 
-  mounted() {
+  mounted(): void {
     Object.keys(ECountries).map((key) => {
       let country = {
         country: key,

@@ -45,7 +45,7 @@ export default class CountryFlagExtended extends Vue {
     return "";
   }
 
-  goToCountryRankings() {
+  goToCountryRankings(): void {
     this.$router.push(`/Countries?country=${this.selectedCountryCode}`);
   }
 }

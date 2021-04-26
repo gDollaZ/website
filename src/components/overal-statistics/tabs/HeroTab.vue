@@ -44,7 +44,7 @@ import AmountPerDayChart from "@/components/overal-statistics/AmountPerDayChart.
 import PopularGameTimeChart from "@/components/overal-statistics/PopularGameTimeChart.vue";
 import HeroWinrate from "@/components/overal-statistics/HeroWinrate.vue";
 import PlayedHeroesChart from "@/components/overal-statistics/PlayedHeroesChart.vue";
-import { EGameMode, EPick } from "@/store/typings";
+import { EGameMode, EPick, GameModeName } from "@/store/typings";
 import { PlayedHero } from "@/store/overallStats/types";
 @Component({
   components: {
@@ -59,11 +59,11 @@ export default class HeroTab extends Vue {
   public selectedHeroesPlayedPick = 0;
   public selectedHeroesPlayedMode = EGameMode.GM_1ON1;
 
-  async mounted(){
+  async mounted(): Promise<void> {
     await this.$store.direct.dispatch.overallStatistics.loadPlayedHeroes();
   }
 
-  get picks() {
+  get picks(): {pickName: string, pickId: EPick}[] {
     return [
       {
         pickName: "overall",
@@ -93,15 +93,15 @@ export default class HeroTab extends Vue {
     );
   }
 
-  public setSelectedHeroesPlayedPick(pick: number) {
+  public setSelectedHeroesPlayedPick(pick: number): void {
     this.selectedHeroesPlayedPick = pick;
   }
 
-  public setSelectedHeroesPlayedMode(mode: EGameMode) {
+  public setSelectedHeroesPlayedMode(mode: EGameMode): void {
     this.selectedHeroesPlayedMode = mode;
   }
 
-  get gameModes() {
+  get gameModes(): GameModeName[] {
     return [
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_1ON1]}`),

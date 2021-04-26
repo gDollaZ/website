@@ -29,7 +29,7 @@ export default class StreamedMatchPlayerInfo extends Vue{
     return `https://twitch.tv/${this.player.twitch}`
   }
 
-  get playerProfilePage(){
+  get playerProfilePage(): string {
     const playerId = encodeURIComponent(this.player.battleTag)
     return `/player/${playerId}`
   }

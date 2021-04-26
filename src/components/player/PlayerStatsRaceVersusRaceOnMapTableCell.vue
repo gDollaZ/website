@@ -26,7 +26,7 @@ export default class PlayerStatsRaceVersusRaceOnMapTableCell extends Vue {
   @Prop() public winThreshold!: number;
   @Prop() public lossThreshold!: number;
 
-  get toWinText() {
+  get toWinText(): string {
     if (this.isComparingSameRace || this.stats.games == 0) {
       return "-";
     }
@@ -34,7 +34,7 @@ export default class PlayerStatsRaceVersusRaceOnMapTableCell extends Vue {
     return `${(this.stats.winrate * 100).toFixed(1)}%`;
   }
 
-  get toWinClass() {
+  get toWinClass(): string[] {
     const classes: string[] = [];
 
     if (this.stats.games == 0 || this.isComparingSameRace) {
@@ -52,11 +52,11 @@ export default class PlayerStatsRaceVersusRaceOnMapTableCell extends Vue {
     return classes;
   }
 
-  get winAndLossText() {
+  get winAndLossText(): string {
     return `(${this.stats.wins}/${this.stats.losses})`;
   }
 
-  get isComparingSameRace() {
+  get isComparingSameRace(): boolean {
     if (!this.compareRace || !this.stats) {
       return false;
     }

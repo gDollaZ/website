@@ -254,7 +254,7 @@
                         v-model="selectedCountry"
                         :return-object="false"
                       >
-                        <template v-slot:item="{ index, item }">
+                        <template v-slot:item="{ item }">
                           <country-flag
                             :country="item.countryCode"
                             size="normal"
@@ -262,7 +262,7 @@
                           {{ item.country }}
                           <v-spacer></v-spacer>
                         </template>
-                        <template v-slot:selection="{ attrs, item }">
+                        <template v-slot:selection="{ item }">
                           <country-flag
                             :country="item.countryCode"
                             size="normal"
@@ -310,7 +310,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { ERaceEnum, EAvatarCategory } from "@/store/typings";
 import { ECountries } from "@/store/countries";
-import { AkaSettings, SpecialPicture } from "../../store/personalSettings/types";
+import { AkaSettings, PersonalSetting, SpecialPicture } from "../../store/personalSettings/types";
 import CountryFlag from "vue-country-flag";
 import PlayerSocials from "./PlayerSocials.vue";
 import { getAvatarUrl } from "../../helpers/url-functions";
@@ -333,7 +333,7 @@ export default class PlayerAvatar extends Vue {
   public countries: { country: string; countryCode: string }[] = [];
   public picNumbers = Array.from(Array(11).keys());
 
-  get playerGames() {
+  get playerGames(): number {
     return this.personalSetting.winLosses?.reduce((sum, stat) => {
       return sum + stat.games;
     }, 0);
@@ -414,7 +414,7 @@ export default class PlayerAvatar extends Vue {
       .map((url) => url.trim());
   }
 
-  get specialPictures(): Array<SpecialPicture> {
+  get specialPictures(): SpecialPicture[] {
     return this.personalSetting.specialPictures || [];
   }
 
@@ -422,16 +422,16 @@ export default class PlayerAvatar extends Vue {
     return this.personalSetting.profileMessage;
   }
 
-  get personalSetting() {
+  get personalSetting(): PersonalSetting {
     return this.$store.direct.state.personalSettings.personalSettings;
   }
 
-  get specialAvatarCategory() {
+  get specialAvatarCategory(): EAvatarCategory {
     return EAvatarCategory.SPECIAL;
   }
 
   public rules = {
-    maxLength: (len: number) => (v: string) =>
+    maxLength: (len: number) => (v: string): string | true =>
       (v || "").length < len || `Can not exceed ${len} characters`,
   };
 
@@ -450,13 +450,14 @@ export default class PlayerAvatar extends Vue {
     editDialogOpened: false,
   };
 
-  countryFilter(item: any, queryText: any, itemText: any) {
+  // eslint-disable-next-line
+  countryFilter(item: any, queryText: string, itemText: string) {
     const textOne = item.country.toLowerCase();
     const searchText = queryText.toLowerCase();
     return textOne.includes(searchText);
   }
 
-  async resetUserProfile() {
+  async resetUserProfile(): Promise<void> {
     this.userProfile = {
       editDialogOpened: false,
       twitch: this.twitch,
@@ -470,7 +471,7 @@ export default class PlayerAvatar extends Vue {
     };
   }
 
-  async saveUserProfile() {
+  async saveUserProfile(): Promise<void> {
     let personalSetting = this.personalSetting;
     personalSetting.profileMessage = this.userProfile.about;
     personalSetting.homePage = this.userProfile.homePage;
@@ -501,7 +502,7 @@ export default class PlayerAvatar extends Vue {
     this.userProfile.editDialogOpened = false;
   }
 
-  getCorrectClasses(category: EAvatarCategory, iconId: number) {
+  getCorrectClasses(category: EAvatarCategory, iconId: number): string[] {
     const classes = ["player-avatar-choosing"];
     if (this.isLoggedInPlayer && this.enabledIfEnoughWins(category, iconId))
       classes.push("pointer");
@@ -531,7 +532,7 @@ export default class PlayerAvatar extends Vue {
     return specialPicture?.description ?? "";
   }
 
-  enabledIfEnoughWins(category: EAvatarCategory, iconId: number) {
+  enabledIfEnoughWins(category: EAvatarCategory, iconId: number): boolean {
     if (category == EAvatarCategory.SPECIAL) {
       return true;
     }
@@ -545,28 +546,28 @@ export default class PlayerAvatar extends Vue {
     );
   }
 
-  winsOfRace(race: ERaceEnum) {
+  winsOfRace(race: ERaceEnum): number {
     return (
       this.personalSetting.winLosses?.filter((w) => w.race == race)[0]?.wins ??
       0
     );
   }
 
-  winsOf(wins: number, iconId: number) {
+  winsOf(wins: number, iconId: number): string {
     return `${wins}/${this.winsTransformed(iconId)}`;
   }
 
-  winsTransformed(iconId: number) {
+  winsTransformed(iconId: number): number {
     return this.personalSetting.pictureRange?.filter(
       (p) => p.pictureId == iconId
     )[0]?.neededWins;
   }
 
-  picture(category: EAvatarCategory, picId: number) {
+  picture(category: EAvatarCategory, picId: number): string {
     return getAvatarUrl(category, picId, this.useClassicIcons);
   }
 
-  openDialog() {
+  openDialog(): void {
     this.dialogOpened = true;
   }
 
@@ -574,7 +575,7 @@ export default class PlayerAvatar extends Vue {
     avatarCategory: EAvatarCategory,
     picture: number,
     description?: string
-  ) {
+  ): Promise<void> {
     if (!this.enabledIfEnoughWins(avatarCategory, picture)) return;
     await this.$store.direct.dispatch.personalSettings.saveAvatar({
       race: avatarCategory,
@@ -586,15 +587,15 @@ export default class PlayerAvatar extends Vue {
     this.dialogOpened = false;
   }
 
-  goToCountryRankings() {
+  goToCountryRankings(): void {
     this.$router.push(`/Countries?country=${this.selectedCountryCode}`);
   }
 
-  mounted() {
+  mounted(): void {
     this.init();
   }
 
-  async init() {
+  async init(): Promise<void> {
     await this.$store.direct.dispatch.personalSettings.loadPersonalSetting();
     this.userProfile = {
       twitch: this.twitch,

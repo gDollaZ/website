@@ -113,6 +113,7 @@ import {
   Match,
   PlayerInTeam,
   Team,
+  GameModeName
 } from "@/store/typings";
 
 @Component({ components: { MatchesGrid } })
@@ -126,7 +127,7 @@ export default class PlayerMatchesTab extends Vue {
   public raceEnums = ERaceEnum;
 
   @Watch("searchModel")
-  public onSearchModelChanged(newVal: Ranking) {
+  public onSearchModelChanged(newVal: Ranking): void {
     if (newVal) {
       this.$store.direct.commit.player.SET_OPPONENT_TAG(
         `${newVal.player.playerIds[0].battleTag}`
@@ -137,17 +138,17 @@ export default class PlayerMatchesTab extends Vue {
     this.getMatches();
   }
 
-  get battleTag() {
+  get battleTag(): string {
     return decodeURIComponent(this.id);
   }
 
-  public async activated() {
+  public async activated(): Promise<void> {
     await this.$store.direct.dispatch.rankings.retrieveSeasons();
     setTimeout(async () => await this.getMatches(), 500);
   }
 
   @Watch("search")
-  public onSearchChanged(newValue: string) {
+  public onSearchChanged(newValue: string): void {
     if (newValue && newValue.length > 2) {
       this.$store.direct.dispatch.rankings.search({
         searchText: newValue.toLowerCase(),
@@ -159,7 +160,7 @@ export default class PlayerMatchesTab extends Vue {
     }
   }
 
-  get gameModes() {
+  get gameModes(): GameModeName[] {
     return [
       {
         modeName: "All",
@@ -204,7 +205,7 @@ export default class PlayerMatchesTab extends Vue {
     return this.$store.direct.state.player.matches;
   }
 
-  get winRateVsOpponent() {
+  get winRateVsOpponent(): string | 0 {
     if (this.opponentWins == 0) {
       return 0;
     }
@@ -216,16 +217,16 @@ export default class PlayerMatchesTab extends Vue {
     return this.$store.direct.state.rankings.searchRanks;
   }
 
-  public isDuplicateName(name: string) {
+  public isDuplicateName(name: string): boolean {
     return this.searchRanks.filter((r) => r.player.name === name).length > 1;
   }
 
-  public setSelectedGameModeForSearch(gameMode: EGameMode) {
+  public setSelectedGameModeForSearch(gameMode: EGameMode): void {
     this.$store.direct.commit.player.SET_GAMEMODE(gameMode);
     this.getMatches();
   }
 
-  get totalMatchesAgainstOpponent() {
+  get totalMatchesAgainstOpponent(): number {
     const opponentTag = this.$store.direct.state.player.opponentTag;
     if (!opponentTag || !this.matches) {
       return 0;
@@ -279,7 +280,7 @@ export default class PlayerMatchesTab extends Vue {
     return 0;
   }
 
-  public async getMatches(page?: number) {
+  public async getMatches(page?: number): Promise<void> {
     if (
       this.isLoadingMatches ||
       !this.$store.direct.state.player.selectedSeason.id
@@ -294,7 +295,7 @@ export default class PlayerMatchesTab extends Vue {
     this.isLoadingMatches = false;
   }
 
-  onPageChanged(page: number) {
+  onPageChanged(page: number): void {
     this.getMatches(page);
   }
 

@@ -1,5 +1,6 @@
 import { PlayerProfile } from "@/store/player/types";
 import { Ranking } from "@/store/ranking/types";
+import { EGameMode } from "../typings";
 
 export interface ClanState {
   playersClan: Clan;
@@ -25,6 +26,15 @@ export interface Clan {
   shamans: string[];
   pendingInvites: string[];
   ranks: Ranking[];
+}
+
+export interface ClanStats {
+  wins?: number,
+  losses?: number,
+  gameMode: EGameMode,
+  games: number,
+  rank?: number,
+  leagueOrder?: number,
 }
 
 export enum EClanRole {

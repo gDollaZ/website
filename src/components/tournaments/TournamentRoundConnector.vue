@@ -32,17 +32,12 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import {
-  ITournamentPlayer,
-  ITournamentMatch,
   ITournamentRound,
-  ITournament,
   ConnectionType
 } from "@/store/tournaments/types";
-import { ERaceEnum } from "@/store/typings";
 import TournamentStraightConnector from "@/components/tournaments/TournamentStraightOpenConnector.vue";
 import TournamentStraightOpenDownConnector from "@/components/tournaments/TournamentStraightOpenDownConnector.vue";
 import TournamentYConnector from "@/components/tournaments/TournamentYConnector.vue";
-import router from "@/router";
 import TournamentStraightOpenConnector from "@/components/tournaments/TournamentStraightOpenConnector.vue";
 
 @Component({
@@ -58,7 +53,7 @@ export default class TournamentRoundConnector extends Vue {
   @Prop() matchesInRound!: number;
   @Prop() totalRounds!: number;
 
-  get numberOfConnectors() {
+  get numberOfConnectors(): number[] {
     let connections = this.matchesInRound;
 
     if (!this.isStraight) {
@@ -73,14 +68,14 @@ export default class TournamentRoundConnector extends Vue {
     return result;
   }
 
-  get isStraight() {
+  get isStraight(): boolean | undefined {
     return (
       this.round.connectionType &&
       this.round.connectionType == ConnectionType.StraightOpen
     );
   }
 
-  get isStraightDown() {
+  get isStraightDown(): boolean | undefined {
     return (
       this.round.connectionType &&
       this.round.connectionType == ConnectionType.StraightOpenDown

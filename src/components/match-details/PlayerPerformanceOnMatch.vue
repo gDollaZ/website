@@ -89,7 +89,7 @@ export default class PlayerPerformanceOnMatch extends Vue {
   @Prop() resourceScoure!: ResourceScore[];
   @Prop() resourceScoureOpponent!: ResourceScore[];
 
-  get goldComparison() {
+  get goldComparison(): string {
     return this.comparison(
       this.resourceScoureOpponent
         .map((s) => s.goldCollected)
@@ -98,7 +98,7 @@ export default class PlayerPerformanceOnMatch extends Vue {
     );
   }
 
-  get woodComparison() {
+  get woodComparison(): string {
     return this.comparison(
       this.resourceScoureOpponent
         .map((s) => s.lumberCollected)
@@ -109,7 +109,7 @@ export default class PlayerPerformanceOnMatch extends Vue {
     );
   }
 
-  get upkeepComparison() {
+  get upkeepComparison(): string {
     return this.comparison(
       this.resourceScoure
         .map((s) => s.goldUpkeepLost)
@@ -120,7 +120,7 @@ export default class PlayerPerformanceOnMatch extends Vue {
     );
   }
 
-  get armyComparison() {
+  get armyComparison(): string {
     return this.comparison(
       this.unitScoreOpponent
         .map((s) => s.largestArmy)
@@ -129,7 +129,7 @@ export default class PlayerPerformanceOnMatch extends Vue {
     );
   }
 
-  get unitsKilledComparison() {
+  get unitsKilledComparison(): string {
     return this.comparison(
       this.unitScoreOpponent
         .map((s) => s.unitsKilled)
@@ -138,7 +138,7 @@ export default class PlayerPerformanceOnMatch extends Vue {
     );
   }
 
-  get unitsProducedComparison() {
+  get unitsProducedComparison(): string {
     return this.comparison(
       this.unitScoreOpponent
         .map((s) => s.unitsProduced)
@@ -147,7 +147,7 @@ export default class PlayerPerformanceOnMatch extends Vue {
     );
   }
 
-  public comparison(opponent: number, me: number) {
+  public comparison(opponent: number, me: number): string {
     const percentageDiff = Math.abs(opponent - me) / ((opponent + me) / 2);
     if (!percentageDiff || percentageDiff < 0.25) return "";
     return opponent > me ? "lost" : "won";

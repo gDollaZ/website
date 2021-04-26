@@ -12,7 +12,7 @@ const mod = {
     async retrieveTournaments(
       context: ActionContext<TournamentsState, RootState>,
     ) {
-      const { commit, rootGetters, state, rootState } = moduleActionContext(
+      const { commit, rootGetters } = moduleActionContext(
         context,
         mod
       );

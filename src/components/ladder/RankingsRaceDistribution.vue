@@ -31,6 +31,7 @@ import RaceIcon from "@/components/player/RaceIcon.vue";
 import { Ranking } from "@/store/ranking/types";
 import * as _ from "lodash";
 import { ERaceEnum } from "@/store/typings";
+import { TranslateResult } from "node_modules/vue-i18n/types";
 
 @Component({
   components: {
@@ -72,7 +73,7 @@ export default class RankingsRaceDistribution extends Vue {
     return _.orderBy(result, (x) => x.percent, "desc");
   }
 
-  public getRaceName(race: number) {
+  public getRaceName(race: number): TranslateResult {
     return this.$t(`races.${ERaceEnum[race]}`);
   }
 }

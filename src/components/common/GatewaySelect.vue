@@ -28,16 +28,16 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 import { Gateways } from "@/store/ranking/types";
-import GatewaysService from "@/services/GatewaysService";
+import { TranslateResult } from "node_modules/vue-i18n/types/index.d";
 
 @Component({})
 export default class GatewaySelect extends Vue {
-  get gateway() {
+  get gateway(): TranslateResult {
     const gateway = this.$store.direct.state.gateway;
     return this.gateWays.filter((g) => g.gateway == gateway)[0].name;
   }
 
-  get gateWays() {
+  get gateWays(): {name: TranslateResult, gateway: Gateways}[] {
     return [
       {
         name: this.$t(`gatewayNames.${Gateways[Gateways.Europe]}`),
@@ -50,7 +50,7 @@ export default class GatewaySelect extends Vue {
     ];
   }
 
-  public setGateway(gateway: Gateways) {
+  public setGateway(gateway: Gateways): void {
     this.$store.direct.commit.SET_GATEWAY(gateway);
     this.$emit("gatewayChanged", gateway);
   }

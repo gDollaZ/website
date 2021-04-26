@@ -81,6 +81,8 @@ import PlayerAvatar from "@/components/player/PlayerAvatar.vue";
 import ModeStatsGrid from "@/components/player/ModeStatsGrid.vue";
 import RaceIcon from "@/components/player/RaceIcon.vue";
 import { EGameMode } from "@/store/typings";
+import { ModeStat, RaceStat } from "@/store/player/types";
+import { Season } from "@/store/ranking/types"
 
 @Component({
   components: { RaceIcon, ModeStatsGrid, PlayerAvatar, PlayerLeague },
@@ -103,11 +105,11 @@ export default class PlayerProfileTab extends Vue {
     },
   ];
 
-  get isBetaSeason() {
+  get isBetaSeason(): boolean {
     return this.selectedSeason?.id === 0;
   }
 
-  get battleTag() {
+  get battleTag(): string {
     return decodeURIComponent(this.id);
   }
 
@@ -124,11 +126,11 @@ export default class PlayerProfileTab extends Vue {
     return this.$store.direct.state.oauth.blizzardVerifiedBtag;
   }
 
-  get gameModeStats() {
+  get gameModeStats(): ModeStat[] {
     return this.$store.direct.state.player.gameModeStats;
   }
 
-  get selectedRaceStats() {
+  get selectedRaceStats(): RaceStat[] {
     if (!this.raceStats) {
       return [];
     }
@@ -140,15 +142,15 @@ export default class PlayerProfileTab extends Vue {
     );
   }
 
-  get selectedSeason() {
+  get selectedSeason(): Season {
     return this.$store.direct.state.player.selectedSeason;
   }
 
-  get raceStats() {
+  get raceStats(): RaceStat[] {
     return this.$store.direct.state.player.raceStats;
   }
 
-  get topGameModeStats() {
+  get topGameModeStats(): ModeStat[] {
     if (!this.gameModeStats) {
       return [];
     }

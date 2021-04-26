@@ -392,7 +392,7 @@ export default class RankingsGrid extends Vue {
     return false;
   }
 
-  raceIcon(race: ERaceEnum) {
+  raceIcon(race: ERaceEnum): string {
     return getAsset(`raceIcons/${ERaceEnum[race]}.jpg`);
   }
 

@@ -41,15 +41,15 @@ export default class LeaveClanModal extends Vue {
   public invitePlayerDialog = false;
   @Prop() isChieftain!: boolean;
 
-  public closeDialog() {
+  public closeDialog(): void {
     this.invitePlayerDialog = false;
   }
 
-  get clanName() {
+  get clanName(): string {
     return this.$store.direct.state.clan.playersClan.clanName;
   }
 
-  public async leaveClan() {
+  public async leaveClan(): Promise<void> {
     await this.$store.direct.dispatch.clan.leaveClan();
     this.invitePlayerDialog = false;
     await this.$store.direct.dispatch.clan.retrievePlayersClan();

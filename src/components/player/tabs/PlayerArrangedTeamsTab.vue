@@ -34,16 +34,17 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import PlayerLeague from "@/components/player/PlayerLeague.vue";
 import { EGameMode } from "@/store/typings";
+import { ModeStat } from "@/store/player/types"
 
 @Component({
   components: { PlayerLeague },
 })
 export default class PlayerArrangedTeamsTab extends Vue {
-  get gameModeStats() {
+  get gameModeStats(): ModeStat[] {
     return this.$store.direct.state.player.gameModeStats;
   }
 
-  get gameModeStatsAt() {
+  get gameModeStatsAt(): ModeStat[] {
     const atStats = this.gameModeStats.filter(
       (m) => m.gameMode === EGameMode.GM_2ON2_AT && m.rank !== 0
     );

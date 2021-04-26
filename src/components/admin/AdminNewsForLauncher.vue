@@ -224,17 +224,26 @@ import {
 
 @Component({ components: { EditorContent, EditorMenuBar } })
 export default class AdminNewsForLauncher extends Vue {
-  data() {
-    return {
-      headersNews: [
-        { text: "Text", value: "message", align: "start" },
-        { text: "Headline", align: "start", value: "date" },
-        { text: "Actions", value: "actions", sortable: false },
-      ],
-    };
-  }
 
-  get news() {
+  public headersNews = [
+        { 
+          text: "Text", 
+          value: "message", 
+          align: "start" 
+        },
+        { 
+          text: "Headline", 
+          align: "start", 
+          value: "date" 
+        },
+        { 
+          text: "Actions", 
+          value: "actions", 
+          sortable: false 
+        },
+      ]
+
+  get news(): NewsMessage[] {
     return this.$store.direct.state.admin.news;
   }
 
@@ -243,7 +252,7 @@ export default class AdminNewsForLauncher extends Vue {
   }
 
   @Watch("isAdmin")
-  onBattleTagChanged() {
+  onBattleTagChanged(): void {
     this.init();
   }
 
@@ -288,23 +297,23 @@ export default class AdminNewsForLauncher extends Vue {
     date: "",
   };
 
-  editNewsItem(item: NewsMessage) {
+  editNewsItem(item: NewsMessage): void {
     this.editedNewsItem = item;
     this.editor.setContent(item.message);
     this.dialogNews = true;
   }
 
-  async deleteNewsItem(item: NewsMessage) {
+  async deleteNewsItem(item: NewsMessage): Promise<void> {
     confirm("Are you sure you want to delete this item?") &&
       (await this.$store.direct.dispatch.admin.deleteNews(item));
     this.dialogNews = false;
   }
 
-  formTitle() {
+  formTitle(): string {
     return this.editedIndex === -1 ? "New Item" : "Edit Item";
   }
 
-  async saveNews() {
+  async saveNews(): Promise<void> {
     this.editedNewsItem.message = this.editor.getHTML();
     await this.$store.direct.dispatch.admin.editNews(this.editedNewsItem);
     this.dialogNews = false;
@@ -312,12 +321,13 @@ export default class AdminNewsForLauncher extends Vue {
     this.editedNewsItem = { bsonId: "", date: "", message: "" };
   }
 
-  closeNews() {
+  closeNews(): void {
     this.dialogNews = false;
     this.editedNewsItem = { bsonId: "", date: "", message: "" };
   }
-
-  showImagePrompt(command: any) {
+  
+  // eslint-disable-next-line
+  showImagePrompt(command: any): void {
     // TODO Use a dialog instead of a browser prompt.
     const src = prompt("Enter the url of your image here");
     if (src !== null) {
@@ -325,7 +335,7 @@ export default class AdminNewsForLauncher extends Vue {
     }
   }
 
-  async mounted() {
+  async mounted(): Promise<void> {
     await this.init();
   }
 }

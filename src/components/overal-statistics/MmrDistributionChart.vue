@@ -9,12 +9,13 @@ import minBy from "lodash/minBy";
 import maxBy from "lodash/maxBy";
 import clamp from "lodash/clamp";
 import { Component, Prop } from "vue-property-decorator";
-import { MmrDistribution } from "@/store/overallStats/types";
+import { MmrCount, MmrDistribution } from "@/store/overallStats/types";
 import { ChartData } from "chart.js";
 import Vue from "vue";
 import BarChart from "@/components/overal-statistics/BarChart.vue";
 import { EGameMode } from "@/store/typings";
 import { Season } from "@/store/ranking/types";
+import { ModeStat } from "@/store/player/types"
 
 @Component({
   components: { BarChart },
@@ -54,7 +55,7 @@ export default class MmrDistributionChart extends Vue {
     );
   }
 
-  get gameModeStats() {
+  get gameModeStats(): ModeStat[] {
     return this.$store.direct.state.player.gameModeStats;
   }
 
@@ -63,12 +64,12 @@ export default class MmrDistributionChart extends Vue {
       return 0;
     }
 
-    const minMMR = minBy(this.mmrDistribution.distributedMmrs, (d) => d.mmr);
-    const maxMMR = maxBy(this.mmrDistribution.distributedMmrs, (d) => d.mmr);
+    const minMMR = minBy(this.mmrDistribution.distributedMmrs, (d) => d.mmr) as MmrCount;
+    const maxMMR = maxBy(this.mmrDistribution.distributedMmrs, (d) => d.mmr) as MmrCount;
     const clampedPlayerMMR = clamp(
       this.mmrOfLoggedInPlayer,
-      minMMR!.mmr,
-      maxMMR!.mmr
+      minMMR.mmr,
+      maxMMR.mmr
     );
     const mmrGroup = this.mmrDistribution.distributedMmrs.find(
       (d) => Math.abs(d.mmr + 25 - clampedPlayerMMR) <= 25
@@ -129,7 +130,7 @@ export default class MmrDistributionChart extends Vue {
     };
   }
 
-  get mmrDistributionChartOptions() {
+  get mmrDistributionChartOptions(): unknown {
     if (!this.mmrDistribution.distributedMmrs) {
       return null;
     }

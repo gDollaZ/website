@@ -10,7 +10,7 @@ import { Component, Prop } from "vue-property-decorator";
 export default class LeagueIcon extends Vue {
   @Prop() league!: number;
 
-  leagueIcon() {
+  leagueIcon(): unknown {
     if (this.league != undefined) {
       const images = require.context(
         "../../assets/leagueIcons/",

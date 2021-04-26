@@ -37,22 +37,14 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import {
-  ITournamentPlayer,
-  ITournamentMatch,
   ITournamentRound,
-  ITournament,
-  ConnectionType
 } from "@/store/tournaments/types";
-import { ERaceEnum } from "@/store/typings";
-import router from "@/router";
 
-@Component({
-  components: {}
-})
+@Component({})
 export default class TournamentYConnector extends Vue {
   @Prop() round!: ITournamentRound;
 
-  getLineStyle() {
+  getLineStyle(): unknown {
     const middle_offset = 3;
     const arc_height = 6;
     const between_offset = 11;

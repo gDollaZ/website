@@ -63,19 +63,19 @@ export default class MatchHiglight extends Vue {
   @Prop() itemsCollected!: number;
   @Prop() itemsCollectedOpponent!: number;
 
-  get heroKillsComparison() {
+  get heroKillsComparison(): string {
     return this.comparison(this.heroKillsOpponent, this.heroKills);
   }
 
-  get itemsCollectedComparison() {
+  get itemsCollectedComparison(): string {
     return this.comparison(this.itemsCollectedOpponent, this.itemsCollected);
   }
 
-  get experienceComparison() {
+  get experienceComparison(): string {
     return this.comparison(this.experienceOpponent, this.experience);
   }
 
-  public comparison(opponent: number, me: number) {
+  public comparison(opponent: number, me: number): string {
     if (this.notColorWinner) return "";
     const percentageDiff = Math.abs(opponent - me) / ((opponent + me) / 2);
     if (!percentageDiff || percentageDiff < 0.25) return "";

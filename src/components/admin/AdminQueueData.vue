@@ -47,7 +47,7 @@ export default class AdminQueueData extends Vue {
 
   _intervalRefreshHandle = {} as number;
 
-  get headers() : Array<unknown> {
+  get headers(): unknown[] {
     return [
       {
         text: "Battletag",
@@ -107,29 +107,29 @@ export default class AdminQueueData extends Vue {
   }
 
   @Watch("isAdmin")
-  onBattleTagChanged() : void {
+  onBattleTagChanged(): void {
     this.init();
   }
 
-  private async init() : Promise<void> {
+  private async init(): Promise<void> {
     if (this.isAdmin) {
       await this.$store.direct.dispatch.admin.loadQueueData(this.$store.direct.state.oauth.token);
     }
   }
 
-  private async refresh() : Promise<void> {
+  private async refresh(): Promise<void> {
     await this.$store.direct.dispatch.admin.loadQueueData(this.$store.direct.state.oauth.token);
   }
 
-  get queueData() : QueueData[] {
+  get queueData(): QueueData[] {
     return this.$store.direct.state.admin.queuedata;
   }
 
-  get isAdmin() : boolean {
+  get isAdmin(): boolean {
       return this.$store.direct.state.oauth.isAdmin;
   }
 
-  get gameModes() : Array<unknown> {
+  get gameModes(): Array<unknown> {
     return [
       {
         text: this.$t(`gameModes.${EGameMode[EGameMode.GM_1ON1]}`),
@@ -154,7 +154,7 @@ export default class AdminQueueData extends Vue {
     ];
   }
 
-  getPlayerDataInGamemode(modeId : number) : unknown {
+  getPlayerDataInGamemode(modeId: number): unknown {
 
     for (let i=0; i<this.queueData.length; i++) {
       if (this.queueData[i].gameMode == modeId) { 
@@ -167,7 +167,7 @@ export default class AdminQueueData extends Vue {
     
   }
 
-  async mounted() : Promise<void> {
+  async mounted(): Promise<void> {
     await this.init();
 
     this._intervalRefreshHandle = setInterval(async () => {
@@ -175,7 +175,7 @@ export default class AdminQueueData extends Vue {
     }, AppConstants.queueDataRefreshInterval)
   }
 
-  destroyed() : void {
+  destroyed(): void {
     clearInterval(this._intervalRefreshHandle);
   }
 

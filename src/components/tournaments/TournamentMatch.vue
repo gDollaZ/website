@@ -39,11 +39,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import moment from "moment";
 import {
-  ITournamentPlayer,
-  ITournamentMatch,
-  ITournamentRound,
-  ITournament,
-  ConnectionType
+  ITournamentPlayer
 } from "@/store/tournaments/types";
 import CountryFlagExtended from "@/components/common/CountryFlagExtended.vue";
 import { ERaceEnum } from "@/store/typings";
@@ -59,7 +55,7 @@ export default class TournamentMatch extends Vue {
   @Prop() date!: string;
   @Prop() cellHeight!: number;
 
-  getClass(player: ITournamentPlayer, index: number) {
+  getClass(player: ITournamentPlayer, index: number): unknown {
     return {
       "match-player-top": index == 0,
       "match-player-bottom": index == 1,
@@ -70,7 +66,7 @@ export default class TournamentMatch extends Vue {
     };
   }
 
-  formatDate() {
+  formatDate(): string {
     return moment(this.date).format(
       this.$t("dateFormats.dateTime").toString()
     )

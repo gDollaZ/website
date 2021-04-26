@@ -80,11 +80,11 @@ export default class HeroPictureSelect extends Vue {
 
   public dialogOpened = false;
 
-  openDialog() {
+  openDialog(): void {
     this.dialogOpened = true;
   }
 
-  public pickHero(hero: HeroPick) {
+  public pickHero(hero: HeroPick): void {
     const newPick = { index: this.heroIndex, heroPick: hero };
 
     if (hero.heroId === "none" || hero.heroId === "all") {
@@ -155,7 +155,7 @@ export default class HeroPictureSelect extends Vue {
     this.dialogOpened = false;
   }
 
-  public parsePicture(hero: HeroPick) {
+  public parsePicture(hero: HeroPick): string | null {
     try {
       return getAsset(`heroes/${hero.heroId}.png`);
     } catch (e) {
@@ -163,21 +163,21 @@ export default class HeroPictureSelect extends Vue {
     }
   }
 
-  get isEnabledForChange() {
+  get isEnabledForChange(): boolean {
     return (
       this.previousHero?.heroId !== "all" &&
       this.previousHero?.heroId !== "none"
     );
   }
 
-  get previousHero() {
+  get previousHero(): HeroPick | null {
     if (this.heroIndex === 3 || this.heroIndex === 0) {
       return null;
     }
     return this.heroPicks[this.heroIndex - 1];
   }
 
-  get previousPreviousHero() {
+  get previousPreviousHero(): HeroPick | null {
     if (
       this.heroIndex === 4 ||
       this.heroIndex === 1 ||
@@ -190,7 +190,7 @@ export default class HeroPictureSelect extends Vue {
     return this.heroPicks[this.heroIndex - 2];
   }
 
-  isEnabledForSelect(heroPick: HeroPick) {
+  isEnabledForSelect(heroPick: HeroPick): boolean {
     if (this.heroIndex === 0 && heroPick.heroId === "none") return false;
     if (this.heroIndex === 3 && heroPick.heroId === "none") return false;
 
@@ -236,19 +236,19 @@ export default class HeroPictureSelect extends Vue {
     return heroPick.race === raceWithoutRandom;
   }
 
-  get heroPicture() {
+  get heroPicture(): string | null {
     return this.parsePicture(this.heroPicks[this.heroIndex]);
   }
 
-  get heroPicks() {
+  get heroPicks(): HeroPick[] {
     return this.$store.direct.state.overallStatistics.heroPicks;
   }
 
-  get heroPickName() {
+  get heroPickName(): string {
     return this.heroPicks[this.heroIndex].name;
   }
 
-  get possibleHeroPickRows() {
+  get possibleHeroPickRows(): HeroPick[][] {
     return [
       this.possibleHeroPicks.slice(0, 2),
       this.possibleHeroPicks.slice(2, 6),

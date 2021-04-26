@@ -49,13 +49,13 @@ export default class AuthorizationService {
     return (cookie as string) ?? "";
   }
 
-  public async saveAuthToken(token: W3cToken) {
+  public async saveAuthToken(token: W3cToken): Promise<void> {
     Vue.cookies.set(w3CAuth, token.jwt, {
       expires: Infinity,
     });
   }
 
-  public deleteAuthCookie() {
+  public deleteAuthCookie(): void {
     Vue.cookies.remove(w3CAuth);
   }
 

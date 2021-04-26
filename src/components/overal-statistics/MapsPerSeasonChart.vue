@@ -15,13 +15,13 @@ import { MapCount } from "@/store/overallStats/types";
 export default class MapsPerSeasonChart extends Vue {
   @Prop() public mapsPerSeason!: MapCount[];
 
-  get mapNames() {
+  get mapNames(): string[] {
     return this.mapsPerSeason.map((m) =>
       this.$t(`mapNames.${m.map}`).toString()
     );
   }
 
-  get gamesCount() {
+  get gamesCount(): number[] {
     return this.mapsPerSeason.map((m) => m.count);
   }
 

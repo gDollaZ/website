@@ -11,7 +11,7 @@ export default class BarChart extends Mixins(Bar) {
   @Prop() public chartData!: ChartData;
   @Prop() public chartOptions: any;
 
-  get options() {
+  get options(): ChartOptions {
     return this.chartOptions ?? this.defaultOptions;
   }
 
@@ -54,7 +54,7 @@ export default class BarChart extends Mixins(Bar) {
     },
   };
 
-  mounted() {
+  mounted(): void {
     if (this.chartData) {
       this.addPlugin([chartjsPluginAnnotation]);
       this.renderChart(this.chartData, this.options);
@@ -62,7 +62,7 @@ export default class BarChart extends Mixins(Bar) {
   }
 
   @Watch("chartOptions", { deep: true })
-  onOptionsChanged(newOptions: ChartOptions) {
+  onOptionsChanged(newOptions: ChartOptions): void {
     if (this.chartData) this.renderChart(this.chartData, newOptions);
   }
 }

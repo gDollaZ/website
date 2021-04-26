@@ -52,7 +52,7 @@ export default class LineChart extends Mixins(Line) {
     },
   };
 
-  mounted() {
+  mounted(): void {
     // For each line in graph, create gradient backgroundColor
     if (this.chartData.datasets) {
       const canv = document.getElementById("line-chart") as HTMLCanvasElement;

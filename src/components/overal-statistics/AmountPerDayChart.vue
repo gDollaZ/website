@@ -15,11 +15,11 @@ import { ChartData } from "chart.js";
 export default class AmountPerDayChart extends Vue {
   @Prop() public gameDays!: GameDay[];
 
-  get gameDayDates() {
+  get gameDayDates(): string[] {
     return this.gameDays.map((g) => moment(g.date).format("LL"));
   }
 
-  get gameDayCounts() {
+  get gameDayCounts(): number[] {
     return this.gameDays.map((g) => g.gamesPlayed);
   }
 

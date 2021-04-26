@@ -87,6 +87,7 @@ import {
 } from "@/store/overallStats/types";
 import { Watch } from "vue-property-decorator";
 import { ERaceEnum } from "@/store/typings";
+import { TranslateResult } from "node_modules/vue-i18n/types";
 @Component({
   components: { PlayerStatsRaceVersusRaceOnMapTableCell },
 })
@@ -125,7 +126,7 @@ export default class WinratesTab extends Vue {
     },
   ];
 
-  get mmrs() {
+  get mmrs(): {league: TranslateResult, mmr: number}[] {
     const mmrsSorted = this.statsPerRaceAndMap
       .map((r) => r.mmrRange)
       .sort()
@@ -137,7 +138,7 @@ export default class WinratesTab extends Vue {
     return mapped;
   }
 
-  get maps() {
+  get maps(): {mapId: string, mapName: TranslateResult}[] {
     const stats = this.statsPerRaceAndMap[0];
     if (!stats) return [];
     return stats.patchToStatsPerModes[this.selectedPatch].map((r) => {
@@ -165,7 +166,7 @@ export default class WinratesTab extends Vue {
     return statsPerMapAndRace.ratio.slice(1, 5);
   }
 
-  public setSelectedMap(map: string) {
+  public setSelectedMap(map: string): void {
     this.selectedMap = map;
   }
 
@@ -173,7 +174,7 @@ export default class WinratesTab extends Vue {
   public onStatsPerRaceAndMapChange(
     newVal: StatsPerMapAndRace[],
     oldVal: StatsPerMapAndRace[]
-  ) {
+  ): void {
     if (oldVal.length == 0 && newVal.length > 0) {
       if (this.selectedPatch == "") {
         this.setSelectedPatch(this.patches[this.patches.length - 1]);
@@ -185,7 +186,7 @@ export default class WinratesTab extends Vue {
     return this.$store.direct.state.overallStatistics.statsPerMapAndRace;
   }
 
-  get patches() {
+  get patches(): string[] {
     if (this.statsPerRaceAndMap[0]) {
       let allowedPatches = ["All"];
       var patches = Object.keys(
@@ -207,7 +208,7 @@ export default class WinratesTab extends Vue {
     return [];
   }
 
-  public getNumberOfMatches(patchStats: StatsPerMapAndRace[]) {
+  public getNumberOfMatches(patchStats: StatsPerMapAndRace[]): number {
     var dict: { [key: string]: number } = {};
     var total = 0;
 
@@ -241,11 +242,11 @@ export default class WinratesTab extends Vue {
     return total;
   }
 
-  public setSelectedMMR(mmr: number) {
+  public setSelectedMMR(mmr: number): void {
     this.selectedMmr = mmr;
   }
 
-  public setSelectedPatch(patch: string) {
+  public setSelectedPatch(patch: string): void {
     this.selectedPatch = patch;
   }
 }

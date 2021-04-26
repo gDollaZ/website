@@ -1,7 +1,7 @@
 import { INGAME_STATIC_RESOURCES_URL } from '@/main';
 import { EAvatarCategory } from '@/store/typings';
 
-export function getAvatarUrl(category: EAvatarCategory, picId: number, isClassic: boolean) {
+export function getAvatarUrl(category: EAvatarCategory, picId: number, isClassic: boolean): string {
     if (picId == undefined || picId == null) {
       return `${INGAME_STATIC_RESOURCES_URL}icons/raceAvatars/RANDOM_0.jpg`;
     }
@@ -15,10 +15,10 @@ export function getAvatarUrl(category: EAvatarCategory, picId: number, isClassic
     }
   }
 
-export function getProfileUrl(playerId: string) {
+export function getProfileUrl(playerId: string): string {
   return  "/player/" + encodeURIComponent(`${playerId}`)
 }
 
-export function getAsset(path: string) {
+export function getAsset(path: string): string {
   return require(`../assets/${path}`);
 }

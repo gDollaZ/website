@@ -35,15 +35,15 @@ import { Component } from "vue-property-decorator";
 export default class DeleteClanModal extends Vue {
   public dialog = false;
 
-  public closeDialog() {
+  public closeDialog(): void {
     this.dialog = false;
   }
 
-  get clanName() {
+  get clanName(): string {
     return this.$store.direct.state.clan.playersClan.clanName;
   }
 
-  public async leaveClan() {
+  public async leaveClan(): Promise<void> {
     await this.$store.direct.dispatch.clan.deleteClan();
     this.dialog = false;
     await this.$store.direct.dispatch.clan.retrievePlayersClan();

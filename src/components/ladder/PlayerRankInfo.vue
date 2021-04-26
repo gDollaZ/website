@@ -23,7 +23,6 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { PlayerId } from "@/store/ranking/types";
-import { ERaceEnum } from "@/store/typings";
 import { getProfileUrl } from '@/helpers/url-functions';
 
 @Component({})
@@ -31,13 +30,13 @@ export default class PlayerRankInfo extends Vue {
   @Prop() public playerId!: PlayerId;
   @Prop() public clanId!: string;
 
-  public openPlayerProfile(playerId: string) {
+  public openPlayerProfile(playerId: string): void {
     this.$router.push({
       path: getProfileUrl(playerId),
     });
   }
 
-  public openProfileInNewTab(playerId: string) {
+  public openProfileInNewTab(playerId: string): void {
     const path = getProfileUrl(playerId);
     window.open(path, "_blank");
   }

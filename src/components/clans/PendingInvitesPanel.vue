@@ -34,6 +34,8 @@ import ClanCreationPanel from "@/components/clans/ClanCreationPanel.vue";
 import InvitePlayerModal from "@/components/clans/InvitePlayerModal.vue";
 import LeagueIcon from "@/components/ladder/LeagueIcon.vue";
 import { getProfileUrl } from '@/helpers/url-functions';
+import { PlayerProfile } from "@/store/player/types";
+import { Clan } from "@/store/clan/types";
 
 @Component({
   components: { LeagueIcon, InvitePlayerModal, ClanCreationPanel },
@@ -41,32 +43,32 @@ import { getProfileUrl } from '@/helpers/url-functions';
 export default class PendingInvitesPanel extends Vue {
   public search = "";
 
-  public async revokeInvite(member: string) {
+  public async revokeInvite(member: string): Promise<void> {
     await this.$store.direct.dispatch.clan.revokeInvite(member);
     await this.$store.direct.dispatch.clan.retrievePlayersClan();
   }
 
-  get clanValidationError() {
+  get clanValidationError(): string {
     return this.$store.direct.state.clan.clanValidationError;
   }
 
-  get hasNoPendingInvites() {
+  get hasNoPendingInvites(): boolean {
     return this.playersClan?.pendingInvites?.length === 0;
   }
 
-  get searchPlayers() {
+  get searchPlayers(): PlayerProfile[] {
     return this.$store.direct.state.clan.searchPlayers;
   }
 
-  public goToPlayer(battleTag: string) {
+  public goToPlayer(battleTag: string): void {
     this.$router.push({ path: getProfileUrl(battleTag) });
   }
 
-  get playersClan() {
+  get playersClan(): Clan {
     return this.$store.direct.state.clan.playersClan;
   }
 
-  async mounted() {
+  async mounted(): Promise<void> {
     await this.$store.direct.dispatch.clan.retrievePlayersClan();
   }
 }

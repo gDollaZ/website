@@ -16,11 +16,11 @@ import { EGameMode } from "@/store/typings";
 export default class MultipleAmountPerDayChart extends Vue {
   @Prop() public gameDays!: GameDayPerMode[];
 
-  get gameDayDates() {
+  get gameDayDates(): string[] {
     return this.allSet.gameDays.map((g) => moment(g.date).format("LL"));
   }
 
-  get allSet() {
+  get allSet(): GameDayPerMode {
     return this.gameDays.filter((g) => g.gameMode == EGameMode.GM_1ON1)[0];
   }
 

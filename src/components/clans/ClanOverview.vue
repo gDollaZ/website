@@ -183,15 +183,15 @@ import PendingInvitesPanel from "@/components/clans/PendingInvitesPanel.vue";
 import AcceptInvitePanel from "@/components/clans/AcceptInvitePanel.vue";
 import LeaveClanModal from "@/components/clans/LeaveClanModal.vue";
 import MemberManagementMenu from "@/components/clans/MemberManagementMenu.vue";
-import { EClanRole } from "@/store/clan/types";
+import { EClanRole, ClanStats, Clan } from "@/store/clan/types";
 import DeleteClanModal from "@/components/clans/DeleteClanModal.vue";
 import { EGameMode } from "@/store/typings";
 import LeagueIcon from "@/components/ladder/LeagueIcon.vue";
 import PlayerAvatar from "@/components/player/PlayerAvatar.vue";
 import ClanRoleIcon from "@/components/clans/ClanRoleIcon.vue";
 import PlayerLeague from "@/components/player/PlayerLeague.vue";
-import { ModeStat } from "@/store/player/types";
 import { getProfileUrl } from "@/helpers/url-functions";
+import { PlayerProfile } from "@/store/player/types"
 
 @Component({
   components: {
@@ -213,15 +213,15 @@ export default class ClanOverview extends Vue {
 
   private modeEnums = Object.freeze(EGameMode);
 
-  get battleTag() {
+  get battleTag(): string {
     return decodeURIComponent(this.id);
   }
 
-  get currentSeason() {
+  get currentSeason(): number {
     return this.$store.direct.state.rankings.seasons[0].id;
   }
 
-  public getLeagueOrder(battleTag: string) {
+  public getLeagueOrder(battleTag: string): number {
     return this.playersClan.ranks
       ?.filter(
         (r) =>
@@ -232,12 +232,12 @@ export default class ClanOverview extends Vue {
       .sort((a, b) => a.leagueOrder - b.leagueOrder)[0]?.leagueOrder;
   }
 
-  public getStats(mode: EGameMode) {
+  public getStats(mode: EGameMode): ClanStats {
     const games = this.playersClan.ranks?.filter(
       (r) => r.gameMode === mode && r.leagueName != null
     );
     const players = games.map((l) => l.player);
-    if (players.length === 0) return { games: 0, gameMode: mode } as ModeStat;
+    if (players.length === 0) return { games: 0, gameMode: mode };
 
     const reduced = players.reduce(
       (a, b) => ({
@@ -271,86 +271,86 @@ export default class ClanOverview extends Vue {
     return reduced;
   }
 
-  get clanIsFunded() {
+  get clanIsFunded(): boolean {
     return this.playersClan.isSuccesfullyFounded;
   }
 
-  get roleEnums() {
+  get roleEnums(): typeof EClanRole {
     return EClanRole;
   }
 
-  get clanValidationError() {
+  get clanValidationError(): string {
     return this.$store.direct.state.clan.clanValidationError;
   }
 
-  get hasPendingInvite() {
+  get hasPendingInvite(): string {
     return this.$store.direct.state.clan.selectedMemberShip
       ?.pendingInviteFromClan;
   }
 
-  get searchPlayers() {
+  get searchPlayers(): PlayerProfile[] {
     return this.$store.direct.state.clan.searchPlayers;
   }
 
-  public gotToChiefTain() {
+  public gotToChiefTain(): void {
     this.goToPlayer(this.playersClan.chiefTain);
   }
 
-  public defineRole(member: string) {
+  public defineRole(member: string): EClanRole {
     if (member === this.playersClan.chiefTain) return EClanRole.ChiefTain;
     if (this.playersClan.shamans.find((s) => s === member))
       return EClanRole.Shaman;
     return EClanRole.Member;
   }
 
-  get loggedInRole() {
+  get loggedInRole(): EClanRole {
     return this.defineRole(this.verifiedBtag);
   }
 
-  get loggedInPlayerIsChiefTain() {
+  get loggedInPlayerIsChiefTain(): boolean {
     return this.playersClan.chiefTain === this.verifiedBtag;
   }
 
-  get loggedInPlayerIsShaman() {
+  get loggedInPlayerIsShaman(): boolean {
     return (
-      this.playersClan.shamans.find((s) => s === this.verifiedBtag) ||
+      this.playersClan.shamans.find((s) => s === this.verifiedBtag) != undefined ||
       this.loggedInPlayerIsChiefTain
     );
   }
 
-  public goToPlayer(battleTag: string) {
+  public goToPlayer(battleTag: string): void {
     this.$router.push({ path: getProfileUrl(battleTag) });
   }
 
-  get verifiedBtag() {
+  get verifiedBtag(): string {
     return this.$store.direct.state.oauth.blizzardVerifiedBtag;
   }
 
-  get hasNoClan() {
+  get hasNoClan(): boolean {
     return !this.playersClan?.clanId;
   }
 
-  get isLoggedInPlayer() {
+  get isLoggedInPlayer(): boolean {
     return this.verifiedBtag === this.selectedPlayer;
   }
 
-  get selectedPlayer() {
+  get selectedPlayer(): string {
     return this.$store.direct.state.player.battleTag;
   }
 
-  get playersClan() {
+  get playersClan(): Clan {
     return this.$store.direct.state.clan.playersClan;
   }
 
-  get shamans() {
+  get shamans(): string[] {
     return this.$store.direct.state.clan.playersClan.shamans;
   }
 
-  get members() {
+  get members(): string[] {
     return this.$store.direct.state.clan.playersClan.members;
   }
 
-  async mounted() {
+  async mounted(): Promise<void> {
     this.$store.direct.commit.player.SET_BATTLE_TAG(this.battleTag);
 
     await this.$store.direct.dispatch.player.loadProfile({ battleTag: this.battleTag, freshLogin: false});

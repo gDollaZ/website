@@ -321,11 +321,11 @@ export default class CountryRankingsGrid extends Vue {
 
   leagueMap: Map<number, League> = new Map();
 
-  get groupedRankings() {
+  get groupedRankings(): CountryRanking[] {
     return this.rankings;
   }
 
-  mounted() {
+  public mounted(): void {
     this.initLeagueMap();
   }
 
@@ -361,8 +361,7 @@ export default class CountryRankingsGrid extends Vue {
   }
 
   // methods
-  initLeagueMap() {
-    let map = new Map();
+  initLeagueMap(): void {
     const league = this.$store.direct.state.rankings.ladders?.filter(
       (l) =>
         l.gateway === this.$store.direct.state.gateway &&
@@ -401,7 +400,7 @@ export default class CountryRankingsGrid extends Vue {
     }
   }
 
-  private static hasSelectedIcon(playerInfo: PlayerInfo) {
+  private static hasSelectedIcon(playerInfo: PlayerInfo): boolean {
     if (
       playerInfo.selectedRace !== undefined &&
       playerInfo.selectedRace != null &&
@@ -413,7 +412,7 @@ export default class CountryRankingsGrid extends Vue {
     return false;
   }
 
-  raceIcon(race: ERaceEnum) {
+  raceIcon(race: ERaceEnum): string {
     return getAsset(`raceIcons/${ERaceEnum[race]}.jpg`);
   }
 

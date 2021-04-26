@@ -61,8 +61,11 @@ import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import { EGameMode, Match } from "@/store/typings";
 import { ModeStat } from "@/store/player/types";
+import { PlayerId, Season } from "@/store/ranking/types"
 import RecentPerformance from "@/components/player/RecentPerformance.vue";
 import { getProfileUrl } from "@/helpers/url-functions";
+import { TranslateResult } from "node_modules/vue-i18n/types";
+import { Gateways } from "@/store/ranking/types";
 
 @Component({
   components: { RecentPerformance },
@@ -75,45 +78,45 @@ export default class PlayerLeague extends Vue {
 
   matches: Match[] = [];
 
-  get playerId() {
+  get playerId(): string {
     return this.modeStat.id;
   }
 
-  get leagueMode() {
+  get leagueMode(): TranslateResult {
     return this.$t(`gameModes.${EGameMode[this.modeStat.gameMode]}`);
   }
 
-  get gameMode() {
+  get gameMode(): EGameMode {
     return this.modeStat.gameMode;
   }
 
-  get league() {
+  get league(): number {
     return this.modeStat.leagueId;
   }
 
-  get gateWay() {
+  get gateWay(): Gateways {
     return this.$store.direct.state.gateway;
   }
 
-  get selectedSeason() {
+  get selectedSeason(): Season {
     return this.$store.direct.state.player.selectedSeason;
   }
 
-  get battleTag() {
+  get battleTag(): string {
     return this.$store.direct.state.player.battleTag;
   }
 
-  get atPartner() {
+  get atPartner(): PlayerId {
     return this.modeStat.playerIds.filter(
       (id) => this.battleTag !== id.battleTag
     )[0];
   }
 
-  get seasonAndGameModeAndGateway() {
+  get seasonAndGameModeAndGateway(): string {
     return `${this.selectedSeason.id}${this.gameMode}${this.gateWay}`;
   }
 
-  public async init() {
+  public async init(): Promise<void> {
     const {
       matches,
     } = await this.$store.direct.getters.matchService.retrievePlayerMatches(
@@ -128,13 +131,13 @@ export default class PlayerLeague extends Vue {
     this.matches = matches;
   }
 
-  public navigateToPartner() {
+  public navigateToPartner(): void {
     this.$router.push({
       path: getProfileUrl(this.atPartner.battleTag),
     });
   }
 
-  public navigateToLeague() {
+  public navigateToLeague(): void {
     this.$router.push({
       path: `/Rankings?season=${this.selectedSeason.id}&gateway=${
         this.gateWay
@@ -177,7 +180,7 @@ export default class PlayerLeague extends Vue {
     }
   }
 
-  get isRanked() {
+  get isRanked(): boolean {
     return this.modeStat.rank > 0;
   }
 
@@ -190,7 +193,7 @@ export default class PlayerLeague extends Vue {
         )
       )
       .filter(Boolean)
-      .map((team) => (team!.won ? "W" : "L"));
+      .map((team) => (team?.won ? "W" : "L"));
   }
 
   get isRecentPerformanceVisible(): boolean {
@@ -202,7 +205,7 @@ export default class PlayerLeague extends Vue {
   }
 
   @Watch("seasonAndGameModeAndGateway", { immediate: true })
-  onSeasonOrGameModeOrGatewayChange() {
+  onSeasonOrGameModeOrGatewayChange(): void {
     this.init();
   }
 }

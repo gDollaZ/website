@@ -40,11 +40,11 @@ export default class TournamentSelect extends Vue {
   @Prop() tournaments!: ITournament[];
   @Prop() selectedTournament!: ITournament;
 
-  get selectedTournamentText() {
+  get selectedTournamentText(): string {
     return this.selectedTournament ? this.selectedTournament.name : 'Select tournament';
   }
 
-  public selectTournament(tournament: ITournament) {
+  public selectTournament(tournament: ITournament): void {
     this.$emit("tournamentSelected", tournament);
   }
 

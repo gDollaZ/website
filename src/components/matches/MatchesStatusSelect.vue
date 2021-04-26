@@ -35,15 +35,16 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 import { MatchStatus } from "@/store/match/types";
+import { TranslateResult } from "node_modules/vue-i18n/types";
 
 @Component({})
 export default class MatchesStatusSelect extends Vue {
-  get status() {
+  get status(): unknown {
     const selectedStatus = this.$store.direct.state.matches.status;
     return this.matchStatuses.filter((x) => x.status == selectedStatus)[0].name;
   }
 
-  get matchStatuses() {
+  get matchStatuses(): {name: TranslateResult, status: MatchStatus}[] {
     return [
       {
         name: this.$t(`matchStatuses.onGoing`),
@@ -56,7 +57,7 @@ export default class MatchesStatusSelect extends Vue {
     ];
   }
 
-  public setStatus(status: MatchStatus) {
+  public setStatus(status: MatchStatus): void {
     this.$store.direct.dispatch.matches.setStatus(status);
   }
 }

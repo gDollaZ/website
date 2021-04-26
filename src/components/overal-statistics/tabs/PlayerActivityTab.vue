@@ -132,7 +132,7 @@ import Component from "vue-class-component";
 import GameLengthChart from "@/components/overal-statistics/GameLengthChart.vue";
 import AmountPerDayChart from "@/components/overal-statistics/AmountPerDayChart.vue";
 import PopularGameTimeChart from "@/components/overal-statistics/PopularGameTimeChart.vue";
-import { EGameMode } from "@/store/typings";
+import { EGameMode, GameModeName } from "@/store/typings";
 import MultipleAmountPerDayChart from "@/components/overal-statistics/MultipleAmountPerDayChart.vue";
 import AmountPerGatewayPerDayChart from "@/components/overal-statistics/AmountPerGatewayPerDayChart.vue";
 import MapsPerSeasonChart from "@/components/overal-statistics/MapsPerSeasonChart.vue";
@@ -155,27 +155,27 @@ export default class PlayerActivityTab extends Vue {
   public overWrittenOnce = false;
   public selectedModeForMaps = EGameMode.GM_1ON1;
 
-  public setSelectedLengthMode(mode: EGameMode) {
+  public setSelectedLengthMode(mode: EGameMode): void {
     this.selectedLengthMode = mode;
   }
 
-  public setSelectedModeForMaps(mode: EGameMode) {
+  public setSelectedModeForMaps(mode: EGameMode): void {
     this.selectedModeForMaps = mode;
   }
 
-  public setSelectedSeasonForMaps(season: string) {
+  public setSelectedSeasonForMaps(season: string): void {
     this.selectedSeasonForMaps = season;
   }
 
-  public setSelectedGamesPerDayMode(mode: EGameMode) {
+  public setSelectedGamesPerDayMode(mode: EGameMode): void {
     this.selectedGamesPerDayMode = mode;
   }
 
-  public setSelectedModeGameHour(mode: EGameMode) {
+  public setSelectedModeGameHour(mode: EGameMode): void {
     this.selectedPopularHourMode = mode;
   }
 
-  get seasons() {
+  get seasons(): string[] {
     return [
       "All",
       ...this.$store.direct.state.rankings.seasons.map((s) => s.id.toString()),
@@ -190,7 +190,7 @@ export default class PlayerActivityTab extends Vue {
     );
   }
 
-  get gameModesWithAll() {
+  get gameModesWithAll(): GameModeName[] {
     return [
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.UNDEFINED]}`),
@@ -200,15 +200,15 @@ export default class PlayerActivityTab extends Vue {
     ];
   }
 
-  get selectedSeasonForMapsInitial() {
+  get selectedSeasonForMapsInitial(): string {
     return this.$store.direct.state.rankings.seasons[0]?.id?.toString() ?? "";
   }
 
-  get isAllMode() {
+  get isAllMode(): boolean {
     return this.selectedGamesPerDayMode === EGameMode.UNDEFINED;
   }
 
-  get gameModes() {
+  get gameModes(): GameModeName[] {
     return [
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_1ON1]}`),

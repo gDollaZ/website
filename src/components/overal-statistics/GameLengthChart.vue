@@ -7,6 +7,7 @@ import { Component, Prop } from "vue-property-decorator";
 import { GameLength } from "@/store/overallStats/types";
 import moment from "moment";
 import BarChart from "@/components/overal-statistics/BarChart.vue";
+import { Length } from "@/store/overallStats/types"
 import { ChartData } from "chart.js";
 import Vue from "vue";
 
@@ -16,13 +17,13 @@ import Vue from "vue";
 export default class GameLengthChart extends Vue {
   @Prop() public gameLength!: GameLength;
 
-  getTrimmedTimes() {
+  getTrimmedTimes(): Length[] {
     const times = this.gameLength.lengths.slice(4);
     times.pop();
     return times;
   }
 
-  get passedTime() {
+  get passedTime(): string[] {
     return this.getTrimmedTimes().map((g) =>
       moment
         .utc(moment.duration(g.passedTimeInSeconds, "seconds").asMilliseconds())
@@ -30,7 +31,7 @@ export default class GameLengthChart extends Vue {
     );
   }
 
-  get gamesCount() {
+  get gamesCount(): number[] {
     return this.getTrimmedTimes().map((g) => g.games);
   }
 

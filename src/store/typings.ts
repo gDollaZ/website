@@ -1,4 +1,5 @@
 import { Moment } from "moment";
+import { TranslateResult } from "vue-i18n";
 import { Gateways } from "./ranking/types";
 
 export type RootState = {
@@ -106,6 +107,11 @@ export interface PlayerScore {
   heroes: Hero[];
   heroScore: HeroScore;
   resourceScore: ResourceScore;
+}
+
+export interface GameModeName {
+  modeName: TranslateResult | string,
+  modeId: EGameMode,
 }
 
 export enum EGameMode {

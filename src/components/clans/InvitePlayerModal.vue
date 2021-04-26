@@ -79,6 +79,7 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import { PlayerProfile } from "@/store/player/types";
+import { Clan } from "@/store/clan/types";
 
 @Component({})
 export default class InvitePlayerModal extends Vue {
@@ -87,23 +88,23 @@ export default class InvitePlayerModal extends Vue {
 
   public dialog = false;
 
-  get loggedInPlayerIsChiefTain() {
+  get loggedInPlayerIsChiefTain(): boolean {
     return this.playersClan.chiefTain === this.verifiedBtag;
   }
 
-  get verifiedBtag() {
+  get verifiedBtag(): string {
     return this.$store.direct.state.oauth.blizzardVerifiedBtag;
   }
 
-  get clanValidationError() {
+  get clanValidationError(): string {
     return this.$store.direct.state.clan.clanValidationError;
   }
 
-  get isValidationError() {
+  get isValidationError(): boolean {
     return this.$store.direct.state.clan.clanValidationError !== "";
   }
 
-  public isDuplicateName(name: string) {
+  public isDuplicateName(name: string): boolean {
     return this.searchPlayers.filter((r) => r.name === name).length > 1;
   }
 
@@ -115,7 +116,7 @@ export default class InvitePlayerModal extends Vue {
     return "No player found";
   }
 
-  public async invitePlayer() {
+  public async invitePlayer(): Promise<void> {
     await this.$store.direct.dispatch.clan.invitePlayer(
       this.searchModel.battleTag
     );
@@ -125,7 +126,7 @@ export default class InvitePlayerModal extends Vue {
   }
 
   @Watch("search")
-  public onSearchChanged(newValue: string) {
+  public onSearchChanged(newValue: string): void {
     if (newValue && newValue.length > 2) {
       this.$store.direct.dispatch.clan.searchPlayers(newValue.toLowerCase());
     } else {
@@ -133,11 +134,11 @@ export default class InvitePlayerModal extends Vue {
     }
   }
 
-  get searchPlayers() {
+  get searchPlayers(): PlayerProfile[] {
     return this.$store.direct.state.clan.searchPlayers;
   }
 
-  get playersClan() {
+  get playersClan(): Clan {
     return this.$store.direct.state.clan.playersClan;
   }
 }

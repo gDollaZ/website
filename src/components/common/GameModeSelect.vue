@@ -31,57 +31,58 @@
 </template>
 
 <script lang="ts">
+import { TranslateResult } from "node_modules/vue-i18n/types/index.d";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
-import { EGameMode } from "../../store/typings";
+import { EGameMode, GameModeName } from "../../store/typings";
 
 @Component({})
 export default class GameModeSelect extends Vue {
   @Prop() gameMode?: EGameMode;
   @Prop() disabledModes?: EGameMode[];
 
-  get gameModes() {
+  get gameModes(): GameModeName[] {
     let modes = [
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_1ON1]}`),
-        gameMode: EGameMode.GM_1ON1,
+        modeId: EGameMode.GM_1ON1,
       },
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_2ON2]}`),
-        gameMode: EGameMode.GM_2ON2,
+        modeId: EGameMode.GM_2ON2,
       },
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_2ON2_AT]}`),
-        gameMode: EGameMode.GM_2ON2_AT,
+        modeId: EGameMode.GM_2ON2_AT,
       },
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_4ON4]}`),
-        gameMode: EGameMode.GM_4ON4,
+        modeId: EGameMode.GM_4ON4,
       },
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_FFA]}`),
-        gameMode: EGameMode.GM_FFA,
+        modeId: EGameMode.GM_FFA,
       },
       {
         modeName: `Footmen Frenzy`,
-        gameMode: EGameMode.GM_FOOTMEN_FRENZY,
+        modeId: EGameMode.GM_FOOTMEN_FRENZY,
       },
     ];
 
     if (this.disabledModes) {
-      modes = modes.filter(x => !this.disabledModes?.includes(x.gameMode))
+      modes = modes.filter(x => !this.disabledModes?.includes(x.modeId))
     }
 
     return modes;
   }
 
-  get gameModeName() {
+  get gameModeName(): TranslateResult | string {
     if (!this.gameMode) {
       return '';
     }
 
-    const mode = this.gameModes.filter((g) => g.gameMode == this.gameMode)[0];
+    const mode = this.gameModes.filter((g) => g.modeId == this.gameMode)[0];
 
     if (!mode) {
       return 'Not Supported';
@@ -90,7 +91,7 @@ export default class GameModeSelect extends Vue {
     return mode.modeName;
   }
 
-  public selectGameMode(gameMode: EGameMode) {
+  public selectGameMode(gameMode: EGameMode): void {
     this.$emit("gameModeChanged", gameMode);
   }
 }

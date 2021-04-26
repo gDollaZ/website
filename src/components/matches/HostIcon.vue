@@ -52,7 +52,7 @@ export default class HostIcon extends Vue {
     }
   }
 
-  stripTag(tag: string) {
+  stripTag(tag: string): string {
     if (!tag) {
       return '';
     }

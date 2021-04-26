@@ -51,7 +51,6 @@ import {
   ITournamentPlayer,
   ITournamentMatch,
   ITournamentRound,
-  ITournament,
   ConnectionType,
 } from "@/store/tournaments/types";
 import { ERaceEnum } from "@/store/typings";
@@ -67,7 +66,7 @@ import TournamentRoundConnector from "@/components/tournaments/TournamentRoundCo
 export default class TournamentBracket extends Vue {
   @Prop() bracketRounds!: ITournamentRound[];
 
-  get totalRounds() {
+  get totalRounds(): number {
     if (!this.bracketRounds) {
       return 0;
     }
@@ -75,7 +74,7 @@ export default class TournamentBracket extends Vue {
     return this.bracketRounds.length;
   }
 
-  get bracketRoundsWithDimensions() {
+  get bracketRoundsWithDimensions(): ITournamentRound[] {
     for (let index = 0; index < this.totalRounds; index++) {
       const round = this.bracketRounds[index];
       const prevRound = this.bracketRounds[index - 1];
@@ -88,7 +87,7 @@ export default class TournamentBracket extends Vue {
           prevRound
         );
         round.dimensions.cellHeight = this.calculateCellHeight(
-          round,
+          //round,
           prevRound
         );
       }
@@ -97,7 +96,8 @@ export default class TournamentBracket extends Vue {
     return this.bracketRounds;
   }
 
-  getClass(player: ITournamentPlayer, index: number) {
+  getClass(player: ITournamentPlayer, index: number): unknown {
+    // todo: this should really be a type...
     return {
       "bracket-player-top": index == 0,
       "bracket-player-bottom": index == 1,
@@ -108,14 +108,14 @@ export default class TournamentBracket extends Vue {
     };
   }
 
-  private matchSelected(match: ITournamentMatch) {
+  private matchSelected(match: ITournamentMatch): void {
     this.$emit("matchSelected", match);
   }
 
   private calculateCellHeight(
-    round: ITournamentRound,
+    //round: ITournamentRound,
     prevRound: ITournamentRound
-  ) {
+  ): number {
     let previousHeight = 20;
     let multiplier = 2;
 
@@ -136,7 +136,7 @@ export default class TournamentBracket extends Vue {
   private calculateHeaderHeight(
     round: ITournamentRound,
     prevRound: ITournamentRound
-  ) {
+  ): number {
     let height = 40;
     if ((prevRound || round).connectionType === ConnectionType.StraightOpen) {
       height = 64 - (round.round - 1) * 12;

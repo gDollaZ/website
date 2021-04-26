@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import { getAsset } from "@/helpers/url-functions";
+import { TranslateResult } from "node_modules/vue-i18n/types";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
@@ -20,7 +21,7 @@ import { Component, Prop } from "vue-property-decorator";
 export default class HeroPicture extends Vue {
   @Prop() heroIcon!: string;
 
-  public parsePicture(hero: string) {
+  public parsePicture(hero: string): string | null {
     try {
       return getAsset(`heroes/${hero}.png`);
     } catch (e) {
@@ -28,11 +29,11 @@ export default class HeroPicture extends Vue {
     }
   }
 
-  get heroPicture() {
+  get heroPicture(): string | null {
     return this.parsePicture(this.heroIcon);
   }
 
-  public getName(hero: string) {
+  public getName(hero: string): TranslateResult {
     return this.$t(`heroNames.${hero}`);
   }
 }

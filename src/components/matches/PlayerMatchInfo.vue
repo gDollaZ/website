@@ -63,7 +63,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { PlayerInTeam } from "@/store/typings";
+import { ERaceEnum, PlayerInTeam } from "@/store/typings";
 import PlayerIcon from "@/components/matches/PlayerIcon.vue";
 import { RaceStat } from "@/store/player/types";
 import CountryFlagExtended from "@/components/common/CountryFlagExtended.vue";
@@ -83,7 +83,7 @@ export default class PlayerMatchInfo extends Vue {
 
   public winrate: RaceStat = {} as RaceStat;
 
-  get won() {
+  get won(): string {
     if (this.unfinishedMatch) {
       return "";
     }
@@ -95,15 +95,15 @@ export default class PlayerMatchInfo extends Vue {
     return "";
   }
 
-  get race() {
+  get race(): ERaceEnum {
     return this.player.race;
   }
 
-  get rndRace() {
+  get rndRace(): ERaceEnum {
     return this.player.rndRace;
   }
 
-  get mmrChange() {
+  get mmrChange(): number {
     if (this.player.oldMmr && this.player.currentMmr) {
       return Math.floor(this.player.currentMmr - this.player.oldMmr);
     }
@@ -111,15 +111,15 @@ export default class PlayerMatchInfo extends Vue {
     return 0;
   }
 
-  get currentRating() {
+  get currentRating(): number {
     return Math.floor(this.player.oldMmr);
   }
 
-  get textClass() {
+  get textClass(): string {
     return this.left ? "player-info__right" : "player-info__left";
   }
 
-  get battleTag() {
+  get battleTag(): string {
     if (!this.player) {
       return "";
     }
@@ -127,15 +127,15 @@ export default class PlayerMatchInfo extends Vue {
     return this.player.battleTag;
   }
 
-  get nameWithoutBtag() {
+  get nameWithoutBtag(): string {
     return this.player.name;
   }
 
-  get showPlayerInfo() {
+  get showPlayerInfo(): boolean {
     return !this.unfinishedMatch || !this.isAnonymous;
   }
 
-  public openProfileInNewTab() {
+  public openProfileInNewTab(): void {
     if (!this.showPlayerInfo) {
       return;
     }
@@ -144,7 +144,7 @@ export default class PlayerMatchInfo extends Vue {
     window.open(path, "_blank");
   }
 
-  private async lazyLoadWinrate() {
+  private async lazyLoadWinrate(): Promise<void> {
     if (!this.showPlayerInfo) {
       return;
     }
@@ -155,7 +155,7 @@ export default class PlayerMatchInfo extends Vue {
     );
   }
 
-  public goToPlayer() {
+  public goToPlayer(): unknown {
     if (!this.showPlayerInfo) {
       return;
     }

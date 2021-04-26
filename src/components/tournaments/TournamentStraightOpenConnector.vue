@@ -11,18 +11,10 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import {
-  ITournamentPlayer,
-  ITournamentMatch,
-  ITournamentRound,
-  ITournament,
-  ConnectionType
+  ITournamentRound
 } from "@/store/tournaments/types";
-import { ERaceEnum } from "@/store/typings";
-import router from "@/router";
 
-@Component({
-  components: {}
-})
+@Component({})
 export default class TournamentStraightConnector extends Vue {
   @Prop() round!: ITournamentRound;
 

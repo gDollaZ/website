@@ -113,13 +113,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import {
   Match,
-  DataTableOptions,
   Team,
   PlayerInTeam,
-  EGameMode,
 } from "@/store/typings";
 import moment from "moment";
 import TeamMatchInfo from "@/components/matches/TeamMatchInfo.vue";
@@ -138,13 +136,15 @@ export default class MatchesGrid extends Vue {
   @Prop() public alwaysLeftName!: string;
   @Prop() public unfinished!: boolean;
 
-  data() {
-    return {
-      page: 1,
-    };
-  }
+  public page = 1;
 
-  destroyed() {
+  // data(): unknown {
+  //   return {
+  //     page: 1,
+  //   };
+  // }
+
+  destroyed(): void {
     this.$emit("pageChanged", 1);
   }
 
@@ -152,7 +152,7 @@ export default class MatchesGrid extends Vue {
     return this.value;
   }
 
-  get currentMatchesLowRange() {
+  get currentMatchesLowRange(): number {
     if (this.totalMatches === 0) {
       return 0;
     }
@@ -162,21 +162,21 @@ export default class MatchesGrid extends Vue {
     return this.$data.page * 50 - 49;
   }
 
-  get currentMatchesHighRange() {
+  get currentMatchesHighRange(): number {
     const highRange = this.$data.page * 50;
 
     return highRange > this.totalMatches ? this.totalMatches : highRange;
   }
 
-  public onPageChanged(page: number) {
+  public onPageChanged(page: number): void {
     this.$emit("pageChanged", page);
   }
 
-  public getWinner(match: Match) {
+  public getWinner(match: Match): Team {
     return match.teams[0];
   }
 
-  public getTotalPages() {
+  public getTotalPages(): number {
     if (!this.totalMatches) {
       return 1;
     }
@@ -184,7 +184,7 @@ export default class MatchesGrid extends Vue {
     return Math.ceil(this.totalMatches / 50);
   }
 
-  public goToMatchDetailPage(match: Match) {
+  public goToMatchDetailPage(match: Match): true | void {
     if (this.unfinished) {
       return true;
     }
@@ -194,11 +194,11 @@ export default class MatchesGrid extends Vue {
     });
   }
 
-  public getLoser(match: Match) {
+  public getLoser(match: Match): Team {
     return match.teams[1];
   }
 
-  public getPlayerTeam(match: Match) {
+  public getPlayerTeam(match: Match): Team | undefined {
     const playerTeam = match.teams.find((team: Team) =>
       team.players.some(
         (player: PlayerInTeam) => player.battleTag === this.alwaysLeftName
@@ -208,7 +208,7 @@ export default class MatchesGrid extends Vue {
     return playerTeam;
   }
 
-  public getOpponentTeam(match: Match) {
+  public getOpponentTeam(match: Match): Team | undefined {
     return match.teams.find(
       (team: Team) =>
         !team.players.some(
@@ -217,14 +217,14 @@ export default class MatchesGrid extends Vue {
     );
   }
 
-  public getOpponentTeams(match: Match) {
+  public getOpponentTeams(match: Match): Team[] {
     const playerTeam = this.getPlayerTeam(match);
     const opponentTeams = match.teams.filter((x) => x != playerTeam);
 
     return opponentTeams;
   }
 
-  public getDuration(match: Match) {
+  public getDuration(match: Match): string {
     if (this.unfinished) {
       return "ongoing";
     }

@@ -30,7 +30,7 @@ import StreamedMatchInfo from "@/components/matches/StreamedMatchInfo.vue";
 export default class TopOngoingMatchesWithStreams extends Vue {
   private matches: Match[] = [];
 
-  async mounted() {
+  async mounted(): Promise<void> {
     await this.$store.direct.dispatch.matches.loadAllOngoingMatches(
       EGameMode.GM_1ON1
     );

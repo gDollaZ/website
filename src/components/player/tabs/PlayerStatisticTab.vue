@@ -75,15 +75,15 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import MatchesGrid from "@/components/matches/MatchesGrid.vue";
-import { EGameMode, ERaceEnum } from "@/store/typings";
+import { EGameMode, ERaceEnum, GameModeName } from "@/store/typings";
 import {
   PlayerMmrRpTimeline,
   PlayerStatsRaceOnMapVersusRace,
-  RaceStat,
   RaceWinsOnMap,
 } from "@/store/player/types";
 import PlayerStatsRaceVersusRaceOnMap from "@/components/player/PlayerStatsRaceVersusRaceOnMap.vue";
 import PlayerMmrRpTimelineChart from "@/components/player/PlayerMmrRpTimelineChart.vue";
+import { Season } from "@/store/ranking/types";
 
 @Component({
   components: {
@@ -97,7 +97,7 @@ export default class PlayerStatisticTab extends Vue {
   public selectedGameMode = this.$store.direct.state.player.gameMode;
   public selectedRace = this.$store.direct.state.player.race;
 
-  get selectedSeason() {
+  get selectedSeason(): Season {
     return this.$store.direct.state.player.selectedSeason;
   }
 
@@ -134,7 +134,7 @@ export default class PlayerStatisticTab extends Vue {
     this.initMmrRpTimeline();
   }
 
-  private async initMmrRpTimeline() {
+  private async initMmrRpTimeline(): Promise<void> {
     let raceStats = this.$store.direct.state.player.raceStats;
     let maxRace = ERaceEnum.HUMAN;
     let maxWins = 0;
@@ -161,7 +161,7 @@ export default class PlayerStatisticTab extends Vue {
     this.$store.direct.dispatch.player.loadPlayerMmrRpTimeline();
   }
 
-  get patches() {
+  get patches(): string[] {
     if (
       !this.playerStatsRaceVersusRaceOnMap ||
       !this.playerStatsRaceVersusRaceOnMap.raceWinsOnMapByPatch
@@ -177,7 +177,7 @@ export default class PlayerStatisticTab extends Vue {
     return patches;
   }
 
-  public setSelectedPatch(patch: string) {
+  public setSelectedPatch(patch: string): void {
     this.selectedPatch = patch;
   }
 
@@ -197,7 +197,7 @@ export default class PlayerStatisticTab extends Vue {
     ].filter((r: any) => r.race !== ERaceEnum.RANDOM);
   }
 
-  get gameModes() {
+  get gameModes(): GameModeName[] {
     return [
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_1ON1]}`),
@@ -215,9 +215,13 @@ export default class PlayerStatisticTab extends Vue {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_FFA]}`),
         modeId: EGameMode.GM_FFA,
       },
+      {
+        modeName: `Footmen Frenzy`,
+        modeId: EGameMode.GM_FOOTMEN_FRENZY,
+      }
     ];
   }
-  get races() {
+  get races(): unknown {
     return [
       {
         raceName: this.$t(`races.${ERaceEnum[ERaceEnum.HUMAN]}`),

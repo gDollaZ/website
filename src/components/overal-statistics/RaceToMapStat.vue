@@ -49,7 +49,7 @@ import PlayerStatsRaceVersusRaceOnMapTableCell from "@/components/player/PlayerS
 export default class RaceToMapStat extends Vue {
   @Prop() public stats!: WinLossesOnMap[];
 
-  public totalWins(stat: RaceStat[]) {
+  public totalWins(stat: RaceStat[]): {wins: number, losses: number, winrate: number} {
     const totalWins = stat.map((s) => s.wins).reduce((a, b) => a + b, 0);
     const totalLosses = stat.map((s) => s.losses).reduce((a, b) => a + b, 0);
     const totalWinrate =

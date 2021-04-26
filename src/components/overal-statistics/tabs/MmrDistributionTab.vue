@@ -57,8 +57,8 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Gateways, Season } from "@/store/ranking/types";
-import { SeasonGameModeGateWayForMMR } from "@/store/overallStats/types";
-import { EGameMode } from "@/store/typings";
+import { MmrDistribution, SeasonGameModeGateWayForMMR } from "@/store/overallStats/types";
+import { EGameMode, GameModeName } from "@/store/typings";
 import GatewaySelect from "@/components/common/GatewaySelect.vue";
 import GameModeSelect from "@/components/common/GameModeSelect.vue";
 import MmrDistributionChart from "@/components/overal-statistics/MmrDistributionChart.vue";
@@ -73,11 +73,11 @@ export default class PlayerActivityTab extends Vue {
   public selectedGateWay: Gateways = Gateways.Europe;
   private loadingData = true;
 
-  get seasons() {
+  get seasons(): Season[] {
     return this.$store.direct.state.rankings.seasons;
   }
 
-  get gameModes() {
+  get gameModes(): GameModeName[] {
     return [
       {
         modeName: this.$t(`gameModes.${EGameMode[EGameMode.GM_1ON1]}`),
@@ -105,7 +105,7 @@ export default class PlayerActivityTab extends Vue {
     return this.$store.direct.state.overallStatistics.loadingMapAndRaceStats;
   }
 
-  public async setSelectedSeason(season: Season) {
+  public async setSelectedSeason(season: Season): Promise<void> {
     this.loadingData = true;
     this.selectedSeason = season;
     if (this.verifiedBtag) {
@@ -117,7 +117,7 @@ export default class PlayerActivityTab extends Vue {
     }
     this.updateMMRDistribution();
   }
-  public async updateMMRDistribution() {
+  public async updateMMRDistribution(): Promise<void> {
     const payload: SeasonGameModeGateWayForMMR = {
       season: this.selectedSeason.id,
       gameMode: this.selectedGameMode,
@@ -129,32 +129,32 @@ export default class PlayerActivityTab extends Vue {
     this.loadingData = false;
   }
 
-  gameModeChanged(gameMode: EGameMode) {
+  gameModeChanged(gameMode: EGameMode): void {
     this.selectedGameMode = gameMode;
     this.updateMMRDistribution();
   }
 
-  gatewayChanged(gateWay: Gateways) {
+  gatewayChanged(gateWay: Gateways): void {
     this.selectedGateWay = gateWay;
     this.updateMMRDistribution();
   }
 
-  mounted() {
+  mounted(): void {
     this.init();
   }
 
-  private async init() {
+  private async init(): Promise<void> {
     await this.$store.direct.dispatch.rankings.retrieveSeasons();
     await this.setSelectedSeason(this.seasons[0]);
     await this.$store.direct.dispatch.overallStatistics.loadMapAndRaceStatistics();
     this.updateMMRDistribution();
   }
 
-  get verifiedBtag() {
+  get verifiedBtag(): string {
     return this.$store.direct.state.oauth.blizzardVerifiedBtag;
   }
 
-  get mmrDistribution() {
+  get mmrDistribution(): MmrDistribution {
     return this.$store.direct.state.overallStatistics.mmrDistribution;
   }
 
@@ -163,7 +163,7 @@ export default class PlayerActivityTab extends Vue {
   }
 
   @Watch("verifiedBtag")
-  async onBattleTagChanged(newBattleTag: string) {
+  async onBattleTagChanged(newBattleTag: string): Promise<void> {
     if (newBattleTag) {
       await this.$store.direct.dispatch.player.loadProfile({battleTag: newBattleTag, freshLogin: false});
       await this.$store.direct.dispatch.player.loadGameModeStats({

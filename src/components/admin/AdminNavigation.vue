@@ -68,7 +68,8 @@ import { Component, Prop } from "vue-property-decorator";
 export default class AdminNavigation extends Vue {
   @Prop() items!: Array<any>;
 
-  itemSelected(item: any, index: number) {
+  // eslint-disable-next-line
+  itemSelected(item: any, index: number): void {
     this.$emit("itemSelected", item, index);
   }
 };

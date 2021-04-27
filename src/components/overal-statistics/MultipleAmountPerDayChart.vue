@@ -67,6 +67,9 @@ export default class MultipleAmountPerDayChart extends Vue {
       case EGameMode.GM_FFA:
         return "rgb(255,114,20)";
 
+      case EGameMode.GM_FOOTMEN_FRENZY:
+        return "rgb(246, 255, 0)";
+
       default:
         return "rgba(54, 162, 235, 1)";
     }
@@ -91,6 +94,9 @@ export default class MultipleAmountPerDayChart extends Vue {
 
       case EGameMode.GM_FFA:
         return 2;
+
+      case EGameMode.GM_FOOTMEN_FRENZY:
+        return 6;
 
       default:
         return 1;
